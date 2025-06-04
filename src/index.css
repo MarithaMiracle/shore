@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
 @theme inline {
+    --breakpoint-xs: 475px;
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
     --radius-lg: var(--radius);
@@ -115,4 +116,144 @@
     body {
         @apply bg-background text-foreground;
     }
+}
+
+
+/* Update your existing @keyframes jumping-series in index.css */
+
+@keyframes jumping-series {
+    0% {
+        transform: translateY(0) scale(1);
+        color: rgb(255, 255, 255);
+        /* Start color: white */
+        animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    15% {
+        /* Peak of first jump */
+        transform: translateY(-90px) scale(1.1);
+        color: #0c878c;
+        /* Change to theme color */
+        animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    }
+    30% {
+        /* Land after first jump */
+        transform: translateY(0) scale(0.9);
+        color: rgb(255, 255, 255);
+        /* Return to white */
+        animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    45% {
+        /* Peak of second jump */
+        transform: translateY(-60px) scale(1.05);
+        color: #0c878c;
+        /* Change to theme color */
+        animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    }
+    60% {
+        /* Land after second jump */
+        transform: translateY(0) scale(0.95);
+        color: rgb(255, 255, 255);
+        /* Return to white */
+        animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    75% {
+        /* Smallest rebound/settle jump */
+        transform: translateY(-25px) scale(1.02);
+        color: #0c878c;
+        /* Change to theme color */
+        animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    }
+    100% {
+        /* Final settle back to original position */
+        transform: translateY(0) scale(1);
+        color: rgb(255, 255, 255);
+        /* Return to white */
+        animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+}
+
+
+/* Keep the .jumping-series-animation class as is: */
+
+.jumping-series-animation {
+    animation: jumping-series 2.5s forwards;
+    transform-origin: bottom;
+}
+
+
+/* frontend/src/index.css */
+
+
+/* ... (your existing @import, @custom-variant, @theme, :root, .dark, @layer base) ... */
+
+
+/* Updated @keyframes for Pulse (no glow, 4 times in a row) */
+
+@keyframes text-noticeable-glance {
+    /* Pulse 1 */
+    0%,
+    23% {
+        transform: scale(1);
+        opacity: 1;
+        color: rgb(255, 255, 255);
+        /* Keep text white */
+    }
+    12.5% {
+        transform: scale(1.025);
+        /* More noticeable scale up */
+        opacity: 0.8;
+        /* Slight dim */
+        color: rgb(255, 255, 255);
+        /* Keep text white */
+    }
+    /* Pulse 2 */
+    25%,
+    48% {
+        transform: scale(1);
+        opacity: 1;
+        color: rgb(255, 255, 255);
+    }
+    37.5% {
+        transform: scale(1.025);
+        opacity: 0.8;
+        color: rgb(255, 255, 255);
+    }
+    /* Pulse 3 */
+    50%,
+    73% {
+        transform: scale(1);
+        opacity: 1;
+        color: rgb(255, 255, 255);
+    }
+    62.5% {
+        transform: scale(1.025);
+        opacity: 0.8;
+        color: rgb(255, 255, 255);
+    }
+    /* Pulse 4 */
+    75%,
+    98% {
+        transform: scale(1);
+        opacity: 1;
+        color: rgb(255, 255, 255);
+    }
+    87.5% {
+        transform: scale(1.025);
+        opacity: 0.8;
+        color: rgb(255, 255, 255);
+    }
+    100% {
+        /* Ensure it ends back in the normal state */
+        transform: scale(1);
+        opacity: 1;
+        color: rgb(255, 255, 255);
+    }
+}
+
+
+/* The .animate-glance class remains the same */
+
+.animate-glance {
+    animation: text-noticeable-glance 2s ease-in-out forwards;
+    /* 2 seconds total duration for 4 pulses */
 }

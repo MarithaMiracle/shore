@@ -1,33 +1,35 @@
 import React from 'react';
-import { About, Benefits, CTA, Faqs, Footer, Header, Hero, Integrations, Pricing, Testimonials } from "./exports";
+import { Routes, Route } from 'react-router-dom';
+import Home from './Home';
+import CreateAccount from './components/CreateAccount';
+import Login from './components/LogIn';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
+import SetPassword from './components/SetPassword';
+import GoogleAuthSuccess from './components/GoogleAuthSuccess';
+import GoogleAuthError from './components/GoogleAuthError';
+import LegalPage from './components/LegalPage';
 
 const App = () => {
   return (
-    <div style={{ fontFamily: 'Britannic Bold' }} className="relative min-h-screen overflow-x-hidden bg-black text-white">
-      {/* Glowing Grid Overlay */}
-      <div
-        className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0, 255, 255, 0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 255, 255, 0.05) 1px, transparent 1px)
-          `,
-          backgroundSize: '40px 40px',
-          boxShadow: '0 0 12px rgba(0, 255, 255, 0.1)',
-        }}
-      />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/create-account" element={<CreateAccount />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
 
-      {/* Content */}
-      <div className="relative z-10">
-        <Header />
-        <Hero />
-        {/* <About />
-        <Benefits />
-        <Integrations />
-        <Pricing />
-        <Testimonials /> */}
-      </div>
-    </div>
+      {/* Routes for Password Reset/Set */}
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
+      <Route path="/set-password/:token" element={<SetPassword />} />
+
+      {/* Routes for Google Authentication Callbacks */}
+      <Route path="/auth/success" element={<GoogleAuthSuccess />} />
+      <Route path="/auth/error" element={<GoogleAuthError />} />
+
+      {/* --- ADD THE ROUTE FOR THE NEW LEGAL PAGE --- */}
+      <Route path="/legal" element={<LegalPage />} />
+      {/* --- END NEW ROUTE --- */}
+    </Routes>
   );
 };
 

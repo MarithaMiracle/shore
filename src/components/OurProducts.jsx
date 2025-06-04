@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 // Accept the 'id' prop here
 const OurProducts = ({ id }) => { 
   return (

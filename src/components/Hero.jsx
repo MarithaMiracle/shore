@@ -111,7 +111,7 @@ const Hero = ({ id, onSearch }) => {
       {/* Filter Box - ID added here */}
       <div
         id="hero-search-box"
-        className="mt-10 sm:mt-20 bg-[#1f2128] rounded-full p-4 sm:p-6 shadow-lg
+        className="mt-10 sm:mt-20 bg-[#1f2128] rounded-t-lg lg:rounded-full p-4 sm:p-6 shadow-lg
                    max-w-md sm:max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto
                    flex flex-row items-center justify-between gap-2 sm:gap-4 px-4 sm:px-6"
       >

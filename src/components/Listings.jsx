@@ -98,35 +98,30 @@ const Listings = ({ searchCriteria, id }) => {
   }
 
   return (
-    <section id={id} className="bg-black py-20 px-6 mt-20 lg:mt-30">
+    <section id={id} className="bg-black py-20 px-6 mt-70 lg:mt-30">
       {/* Top Text - maintain horizontal flex */}
-      <div className="flex justify-between items-start max-w-7xl mx-auto mb-10 lg:mb-16 px-2 sm:px-4 md:px-6">
-        {/* Left Text */}
-        <div className="text-left 
-                        w-[150px] sm:w-[180px] md:w-[200px] lg:w-[150px] xl:w-[150px]">
-          <p className="text-gray-300 lg:w-150 md:w-100 sm:w-50 w-40 
-                        text-[6px] sm:text-[10px] md:text-base lg:text-md xl:text-md
-                        mt-10">
-            Estatify-managed apartments are move-in ready. When you subscribe, you enjoy more benefits than you can imagine, from cozy bedrooms to fully equipped kitchens, free high-speed Wi-Fi, modern air conditioning, and secure parking spaces. Plus, access to amenities like swimming pools, gym facilities, private balconies and gardens, 24/7 security, and convenient laundry services, all designed for your comfort and convenience.
-          </p>
-        </div>
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:max-w-7xl mx-auto mb-10 lg:mb-16 px-2 sm:px-4 md:px-6">
+  {/* Left Text */}
+  <div className="order-2 lg:order-none text-left w-full lg:w-[150px] xl:w-[150px] lg:mt-10 mt-5">
+    <p className="text-gray-300 w-full lg:w-150 md:w-[200px] sm:w-[180px] text-[8px] sm:text-[10px] md:text-base lg:text-md xl:text-md">
+      Estatify-managed apartments are move-in ready. When you subscribe, you enjoy more benefits than you can imagine, from cozy bedrooms to fully equipped kitchens, free high-speed Wi-Fi, modern air conditioning, and secure parking spaces. Plus, access to amenities like swimming pools, gym facilities, private balconies and gardens, 24/7 security, and convenient laundry services, all designed for your comfort and convenience.
+    </p>
+  </div>
 
-        {/* Right Text */}
-        <div className="text-right max-w-4xl px-1 sm:px-2 md:px-4">
-          <h1 className="font-semibold text-[#0c878c] leading-tight
-                         text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl">
-            LISTINGS
-          </h1>
-          <p className="text-gray-300
-                        text-sm xs:text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-4xl
-                        mt-4">
-            Find Your Perfect Stay <br />With Estatify
-          </p>
-        </div>
-      </div>
+  {/* Right Text */}
+  <div className="order-1 lg:order-none text-right pl-40 max-w-4xl px-1 sm:px-2 md:px-4 -mt-10">
+    <h1 className="font-semibold text-[#0c878c] leading-tight text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl">
+      LISTINGS
+    </h1>
+    <p className="text-gray-300 text-sm xs:text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-4xl lg:mt-4 mt-1">
+      Find Your Perfect Stay <br />With Estatify
+    </p>
+  </div>
+</div>
+
 
       {/* Carousel + Description */}
-      <div className="max-w-7xl mx-auto flex space-x-4 md:space-x-8 lg:space-x-10 items-center relative
+      <div className="max-w-7xl mx-auto lg:flex grid grid-cols-1 space-x-4 md:space-x-8 lg:space-x-10 items-center relative
                       px-2 sm:px-4 md:px-6">
 
         {/* Left - Carousel Images */}
@@ -147,16 +142,15 @@ const Listings = ({ searchCriteria, id }) => {
         </div>
 
         {/* Right - Horizontal Sliding Description */}
-        <div className="flex-1 max-w-3xl overflow-hidden
-                        px-2 sm:px-4 md:px-6">
+        <div className="flex-1 max-w-3xl overflow-hidden px-2 sm:px-4 md:px-6">
           <div
             className="flex transition-transform duration-1000 ease-in-out"
             style={{ transform: `translateX(-${current * 100}%)` }}
           >
             {properties.map((item) => (
               <div key={item._id} className="flex-shrink-0 w-full px-2 sm:px-4 md:px-6">
-                <p className="text-[#0c878c] font-semibold lg:mb-4 mb-1
-                              text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl">
+                <p className="text-[#0c878c] font-semibold lg:mb-4 mb-1 w-full
+                              text-[10px] xs:text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl mt-5">
                   From ₦{item.price.toLocaleString()} monthly
                 </p>
                 <h3 className="text-white font-bold lg:mb-2 mb-1
@@ -167,7 +161,7 @@ const Listings = ({ searchCriteria, id }) => {
                   {item.description}
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-2 gap-2 md:gap-6">
                   {[item.title, ...item.amenities].map((amenity, idx) => (
                     <div key={idx} className="flex space-x-3 items-start text-left">
                       <img
@@ -190,7 +184,7 @@ const Listings = ({ searchCriteria, id }) => {
 
         {/* Carousel Controls */}
         <div
-          className="absolute bottom-[-50px] left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3 cursor-pointer"
+          className="absolute lg:bottom-[-80px] bottom-[-40px] left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3 cursor-pointer"
           style={{ width: 'fit-content' }}
         >
           {properties.map((_, idx) => (
@@ -198,7 +192,7 @@ const Listings = ({ searchCriteria, id }) => {
               key={idx}
               onClick={() => goToSlide(idx)}
               className={`rounded-full transition-all duration-300
-                          w-2 h-2 sm:w-3 sm:h-3
+                          w-1 h-1 sm:w-3 sm:h-3 lg:w-3 lg:h-3
                           ${current === idx ? 'bg-[#0c878c] scale-125 shadow-lg' : 'bg-gray-600 hover:bg-[#0a6c70]'}`}
               aria-label={`Go to listing ${idx + 1}`}
               style={{ cursor: 'pointer' }}

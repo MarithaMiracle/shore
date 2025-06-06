@@ -4,20 +4,20 @@ import React from 'react'
 const Faqs = ({ id }) => { 
   return (
     // Apply the received 'id' prop to the outermost section
-    <section id={id} className="bg-black py-20 px-6 mt-20 lg:mt-30"> {/* <-- Added 'id={id}' here */}
+    <section id={id} className="bg-black lg:py-20 py-10 px-6 mt-10 lg:mt-30"> {/* <-- Added 'id={id}' here */}
       {/* Heading & Subheading */}
-      <h1 className="lg:ml-20 ml-10 font-semibold text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl text-[#0c878c] leading-tight">
+      <h1 className="lg:ml-20 font-semibold text-[10px] xs:text-sm sm:text-base md:text-lg lg:text-xl text-[#0c878c] leading-tight">
         COMMON QUESTIONS
-        <p className="mr-40 text-lg xs:text-base sm:text-2xl md:text-3xl lg:text-4xl lg:mt-4 mt-2 text-gray-300">Frequently asked questions</p>
+        <p className="mr-40 w-full text-base xs:text-base sm:text-2xl md:text-3xl lg:text-4xl lg:mt-4 mt-2 text-gray-300">Frequently asked questions</p>
       </h1>
 
       {/* Small Description Below the Texts */}
-      <p className="lg:mt-4 mt-2 lg:ml-20 ml-10 text-[10px] xs:text-[12px] sm:text-xs md:text-sm lg:text-base text-gray-400 lg:max-w-xl max-w-[15rem]">
+      <p className="lg:mt-4 mt-2 lg:ml-20 text-[10px] xs:text-[12px] sm:text-xs md:text-sm lg:text-base text-gray-400 lg:max-w-xl max-w-[15rem]">
         Get quick answers to all your questions and concerns about Estatify and Estatify homes. Whether as a member, host or just a visitor, we will have an answer waiting for you.
       </p>
 
       {/* Accordion Section (stretched right with equal margin) */}
-      <div className="lg:mt-10 mt-5 lg:ml-20 ml-10 lg:mr-20 mr-10 space-y-4">
+      <div className="lg:mt-10 mt-5 lg:ml-20 lg:mr-20 space-y-4">
         {/* Question 1 */}
         <details className="border-b border-gray-700">
           <summary className="cursor-pointer flex justify-between items-center text-[12px] xs:text-xs sm:text-sm md:text-base lg:text-lg font-medium hover:text-[#0c878c] lg:pb-6 pb-3">

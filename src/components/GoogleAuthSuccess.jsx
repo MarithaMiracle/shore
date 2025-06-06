@@ -21,7 +21,7 @@ const GoogleAuthSuccess = () => {
           // Redirect to your main application dashboard or home page
           setTimeout(() => {
             navigate('/');
-          }, 1500); // Short delay for user to see the message
+          }, 2000); // Short delay for user to see the message
         } else {
           setMessage('Login failed: Missing authentication data. Please try again.');
           console.error('GoogleAuthSuccess: Missing token or user data in URL.');
@@ -59,11 +59,7 @@ const GoogleAuthSuccess = () => {
           boxShadow: '0 0 12px rgba(0, 255, 255, 0.1)',
         }}
       />
-
-      {/* Logo Positioned Outside the Form Box (simplified for this page) */}
-      <div className="absolute top-38 z-20 flex justify-center w-full">
-        <img src="/well logo.png" alt="Estatify Logo" className="h-50" />
-      </div>
+      
 
       {/* Message Container */}
       <div className="relative z-10 bg-black/90 border border-[#0c878c]/20 backdrop-blur-xl rounded-xl max-w-md w-full p-8 pt-20 shadow-xl space-y-6 mt-16 text-center">

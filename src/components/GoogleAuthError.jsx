@@ -34,10 +34,6 @@ const GoogleAuthError = () => {
         }}
       />
 
-      {/* Logo Positioned Outside the Form Box */}
-      <div className="absolute top-38 z-20 flex justify-center w-full">
-        <img src="/well logo.png" alt="Estatify Logo" className="h-50" />
-      </div>
 
       {/* Message Container */}
       <div className="relative z-10 bg-black/90 border border-[#0c878c]/20 backdrop-blur-xl rounded-xl max-w-md w-full p-8 pt-20 shadow-xl space-y-6 mt-16 text-center">

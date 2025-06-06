@@ -47,10 +47,12 @@ const Testimonials = ({ id }) => {
   return (
     <section
       id={id}
-      className="flex bg-black w-full lg:mt-20 mt-10 h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[80vh]"
+      className="lg:flex grid grid-cols-1 bg-black w-full lg:mt-20 mt-10 h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[80vh]"
     >
+
+      
       {/* Left Side */}
-      <div className="flex-1 bg-black text-white -mt-20 flex flex-col justify-center relative px-10 py-12">
+      <div className="flex-1 order-2 lg:order-none bg-black text-white -mt-20 flex flex-col justify-center relative px-10 py-12">
         <h2 className="text-[#0c878c] text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-semibold lg:mb-4 mb-2">TESTIMONIALS</h2>
         <p className="text-sm xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl lg:mt-4 mt-2 text-gray-300">Why Customers Love Us</p>
 
@@ -95,7 +97,7 @@ const Testimonials = ({ id }) => {
         </div>
 
         {/* Dots slider */}
-        <div className="flex justify-center mb-[-40px] space-x-3 lg:mt-8 mt-0">
+        <div className="flex justify-center -mt-20 space-x-3 lg:mt-8">
           {testimonialsData.map((_, idx) => (
             <button
               key={idx}
@@ -110,7 +112,7 @@ const Testimonials = ({ id }) => {
       </div>
 
       {/* Right Side */}
-      <div className="flex-1 flex justify-end items-center h-full">
+      <div className="flex-1 flex order-1 lg:none justify-end items-center h-full">
         <img
           src="/Testimonials.png"
           alt="Testimonials"

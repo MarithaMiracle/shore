@@ -111,12 +111,10 @@ const Hero = ({ id, onSearch }) => {
       {/* Filter Box - ID added here */}
       <div
         id="hero-search-box"
-        className="mt-10 sm:mt-20 bg-[#1f2128] rounded-t-lg lg:rounded-full p-4 sm:p-6 shadow-lg
-                   max-w-md sm:max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto
-                   flex flex-row items-center justify-between gap-2 sm:gap-4 px-4 sm:px-6"
+        className="mt-10 sm:mt-20 bg-[#1f2128] rounded-t-lg lg:rounded-full p-4 sm:p-6 shadow-lg max-w-md sm:max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto flex flex-row items-center justify-between gap-4 sm:gap-4 px-4 sm:px-6"
       >
         {/* Location */}
-        <div className="flex-1 border-r border-gray-600 pr-2 sm:pr-4">
+        <div className="flex-2 border-r border-gray-600 sm:pr-4">
           <h3 className="text-[8px] sm:text-xs text-gray-300 font-bold mb-1">LOCATION</h3>
           <p className="text-[6px] sm:text-[10px] lg:text-xs text-gray-400">Where would you love to stay?</p>
           {/* You could add an input here:
@@ -144,7 +142,7 @@ const Hero = ({ id, onSearch }) => {
           </div>
 
           {showPriceOptions && (
-            <div className="absolute left-0 w-full sm:w-30 bg-[#2a2d35] py-3 px-2 sm:px-4 rounded-lg z-10 text-sm shadow-lg mt-6"> {/* Reduced px-2 for smallest screens */}
+            <div className="absolute left-0 w-full sm:w-30 bg-[#2a2d35] py-3 px-2 sm:px-4 rounded-lg z-10 text-xs lg:text-sm shadow-lg mt-5"> {/* Reduced px-2 for smallest screens */}
               <div className="flex flex-col gap-2 mb-2">
                 <input
                   type="number"
@@ -152,7 +150,7 @@ const Hero = ({ id, onSearch }) => {
                   name="minPrice"
                   value={minPrice}
                   onChange={handlePriceChange}
-                  className="w-full px-2 py-1 text-xs rounded bg-[#1f2128] focus:outline-none text-white"
+                  className="w-full px-2 py-1 text-[8px] lg:text-xs rounded bg-[#1f2128] focus:outline-none text-white"
                 />
                 <input
                   type="number"
@@ -160,19 +158,19 @@ const Hero = ({ id, onSearch }) => {
                   name="maxPrice"
                   value={maxPrice}
                   onChange={handlePriceChange}
-                  className="w-full px-2 py-1 text-xs rounded bg-[#1f2128] focus:outline-none text-white"
+                  className="w-full px-2 py-1 text-[8px] lg:text-xs rounded bg-[#1f2128] focus:outline-none text-white"
                 />
               </div>
-              <div className="flex justify-end gap-1 sm:gap-2"> {/* Reduced gap-1 for smallest screens */}
+              <div className="flex justify-center gap-1 sm:gap-2"> {/* Reduced gap-1 for smallest screens */}
                 <button
                     onClick={handleClearPrice}
-                    className="text-[9px] lg:text-[11px] md:text-[11px] sm:text-[11px] xs:text-[11px] px-2 sm:px-2 py-1 border border-red-500 text-red-500 rounded hover:bg-red-500 hover:text-white transition" // Reduced px-1 for smallest screens
+                    className="text-[6px] lg:text-[11px] md:text-[11px] sm:text-[11px] xs:text-[11px] px-1 sm:px-2 py-1 border border-red-500 text-red-500 rounded hover:bg-red-500 hover:text-white transition" // Reduced px-1 for smallest screens
                 >
                   Clear
                 </button>
                 <button
                     onClick={handleSavePrice}
-                    className="text-[9px] lg:text-[11px] md:text-[11px] sm:text-[11px] xs:text-[11px] px-2 sm:px-2 py-1 bg-[#0c878c] text-white rounded hover:opacity-80 transition" // Reduced px-1 for smallest screens
+                    className="text-[6px] lg:text-[11px] md:text-[11px] sm:text-[11px] xs:text-[11px] px-1 sm:px-2 py-1 bg-[#0c878c] text-white rounded hover:opacity-80 transition" // Reduced px-1 for smallest screens
                 >
                   Save
                 </button>
@@ -195,7 +193,7 @@ const Hero = ({ id, onSearch }) => {
           </div>
 
           {showDurationOptions && (
-            <div className="absolute left-0 w-full sm:w-30 bg-[#2a2d35] py-3 px-2 sm:px-4 rounded-lg z-10 text-sm shadow-lg mt-6"> {/* Reduced px-2 for smallest screens */}
+            <div className="absolute left-0 w-max sm:w-30 bg-[#2a2d35] py-3 px-2 sm:px-4 rounded-lg z-10 text-sm shadow-lg mt-5"> {/* Reduced px-2 for smallest screens */}
               <div className="flex flex-col gap-2 text-[7px] lg:text-[11px] md:text-[11px] xs:text-[11px] sm:text-[11px]">
                 {['Daily', 'Monthly', 'Quarterly', 'Biannually', 'Annually'].map((option) => (
                   <label key={option} className="flex items-center gap-2">
@@ -210,7 +208,7 @@ const Hero = ({ id, onSearch }) => {
                   </label>
                 ))}
               </div>
-              <div className="flex justify-end gap-1 sm:gap-2"> {/* Reduced gap-1 for smallest screens */}
+              <div className="flex justify-center gap-1 sm:gap-2"> {/* Reduced gap-1 for smallest screens */}
                 <button
                     onClick={handleClearDuration}
                     className="text-[7px] lg:text-[11px] md:text-[11px] sm:text-[11px] xs:text-[9px] px-1 sm:px-2 xs:px-2 py-1 border border-red-500 text-red-500 rounded hover:bg-red-500 hover:text-white transition mt-2" // Reduced px-1 for smallest screens
@@ -232,7 +230,7 @@ const Hero = ({ id, onSearch }) => {
         <div className="flex-none">
           <button
             onClick={handleFindHome}
-            className="w-full sm:w-auto px-3 sm:px-4 py-2 bg-[#0c878c] hover:bg-white hover:text-[#0c878c] text-white rounded-full text-[6px] sm:text-xs lg:text-sm font-semibold hover:scale-105 transition whitespace-nowrap cursor-pointer"
+            className="w-full sm:w-auto px-2 sm:px-4 py-2 bg-[rgb(12,135,140)] hover:bg-white hover:text-[#0c878c] text-white rounded-md lg:rounded-full text-[6px] sm:text-xs lg:text-sm font-semibold hover:scale-105 transition whitespace-nowrap cursor-pointer"
           >
             Find a home
           </button>

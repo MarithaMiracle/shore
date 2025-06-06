@@ -62,11 +62,11 @@ const Footer = () => {
   return (
     <section className="bg-black text-white w-full px-6 md:px-20 py-12 mt-10 lg:mt-30">
       {/* Top Section */}
-      <div className="flex flex-col md:flex-row justify-between lg:gap-12 gap-6 border-b border-gray-700 lg:pb-15 lg:pt-15">
+      <div className="flex flex-col lg:flex-row justify-between lg:gap-12 gap-6 border-b border-gray-700 lg:pb-15 lg:pt-15">
         {/* Logo and Description */}
         <div className="flex-1">
           <img src="/well logo.png" alt="Estatify Logo" className="lg:h-40 lg:w-40 h-20 w-20 lg:-mt-15 -mt-70 lg:-mb-12 lg:-ml-8 -ml-4" />
-          <p id="footer-mission-text" className="lg:text-sm -mt-5 text-xs text-white mr-20">
+          <p id="footer-mission-text" className="lg:text-sm -mt-5 w-full text-xs text-white mr-20">
           Estatify’s mission is a future where landlords and tenants in Nigeria experience efficient and affordable rental management. Our products help you find an apartment and pay monthly, carry out due diligence and verify your tenants, request facility management for your property and apply for rental loans. How can we help you today?
           </p>
         </div>
@@ -156,7 +156,7 @@ const Footer = () => {
               </li>
               {/* Live Chat - CONVERTED TO LINK */}
               <li className='hover:text-[#0c878c] cursor-pointer'>
-                <Link to={`/#${getFooterSectionId('Live Chat')}`} className='block w-full h-full text-inherit text-xs lg:text-sm no-underline'>Live Chat</Link>
+                <Link to={`/#${getFooterSectionId('Live Chat')}`} className='block w-full h-full text-inherit text-xs lg:text-sm no-underline mb-5'>Live Chat</Link>
               </li>
             </ul>
           </div>
@@ -164,8 +164,8 @@ const Footer = () => {
       </div>
 
       {/* Bottom Section (already uses Link as discussed) */}
-      <div className="flex flex-row justify-between items-center text-md text-white pt-6 lg:gap-4 gap-2">
-        <div className="flex flex-wrap lg:gap-31 gap-4 text-[12px] lg:text-sm justify-center md:justify-start">
+      <div className="flex lg:flex-row flex-col justify-between items-center text-md text-white pt-6 lg:gap-4 gap-4">
+        <div className="flex flex-wrap lg:gap-31 gap-10 text-[12px] lg:text-sm justify-center md:justify-start">
           <span>© Estatify 2025</span>
           <span
             id="terms-footer"

@@ -1,10 +1,9 @@
-// server.js or app.js (your main Express server file)
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
+const MongoStore = require('connect-mongo'); // <-- add this
 require('dotenv').config();
 require('./config/passport');
 
@@ -13,7 +12,7 @@ const app = express();
 // Middleware
 
 app.use(cors({
-    origin: 'https://shore-maritha.vercel.app/',
+    origin: 'https://shore-maritha.vercel.app',
     credentials: true,
 }));
 
@@ -23,6 +22,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'fallback-secret',
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }), // <-- use MongoStore here
     cookie: {
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
@@ -35,10 +35,10 @@ app.use(passport.session());
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
-const propertyRoutes = require('./routes/propertyRoutes'); // <--- ADD THIS LINE
+const propertyRoutes = require('./routes/propertyRoutes');
 
 app.use('/auth', authRoutes);
-app.use('/api/properties', propertyRoutes); // <--- ADD THIS LINE FOR PROPERTIES
+app.use('/api/properties', propertyRoutes);
 
 // Connect to MongoDB and start server
 mongoose.connect(process.env.MONGO_URI)

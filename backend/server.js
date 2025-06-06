@@ -42,10 +42,10 @@ app.use('/api/properties', propertyRoutes);
 
 // Connect to MongoDB with SSL/TLS options
 mongoose.connect(process.env.MONGO_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+        // useNewUrlParser and useUnifiedTopology are deprecated and no longer needed.
+        // They are now the default behavior in MongoDB Node.js Driver v4.0.0+
         ssl: true,
-        tlsAllowInvalidCertificates: false, // ensure valid certs
+        tlsAllowInvalidCertificates: false, // Ensure valid certs in production!
         serverSelectionTimeoutMS: 30000,
     })
     .then(() => {

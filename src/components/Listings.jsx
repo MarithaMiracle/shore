@@ -22,8 +22,8 @@ const amenityIcons = {
 };
 
 const Listings = ({ searchCriteria, id }) => {
-  const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [properties, setProperties] = useState([]);
   const [error, setError] = useState(null);
   const [current, setCurrent] = useState(0);
   const timeoutRef = useRef(null);
@@ -75,7 +75,8 @@ const Listings = ({ searchCriteria, id }) => {
 
   if (loading) {
     return (
-      <section id={id} className="bg-black py-20 px-6 mt-30 text-center text-gray-300">
+      // Increased top margin for loading state to provide ample space on all devices, especially Surface Duo
+      <section id={id} className="bg-black py-20 px-6 mt-[350px] text-center text-gray-300">
         <p>Loading properties...</p>
       </section>
     );
@@ -83,7 +84,8 @@ const Listings = ({ searchCriteria, id }) => {
 
   if (error) {
     return (
-      <section id={id} className="bg-black py-20 px-6 mt-30 text-center text-red-500">
+      // Increased top margin for error state to provide ample space on all devices, especially Surface Duo
+      <section id={id} className="bg-black py-20 px-6 mt-[350px] text-center text-red-500">
         <p>{error}</p>
       </section>
     );
@@ -91,25 +93,29 @@ const Listings = ({ searchCriteria, id }) => {
 
   if (properties.length === 0) {
     return (
-      <section id={id} className="bg-black py-20 px-6 mt-30 text-center text-gray-300">
+      // Increased top margin for no properties found state to provide ample space on all devices, especially Surface Duo
+      <section id={id} className="bg-black py-20 px-6 mt-[350px] text-center text-gray-300">
         <p>No properties found matching your criteria.</p>
       </section>
     );
   }
 
   return (
-    <section id={id} className="bg-black py-20 px-6 mt-70 lg:mt-30">
+    // Main section with responsive padding and significantly increased top margin.
+    // The `mt-[550px]` ensures a very large buffer for smaller screens (like Surface Duo),
+    // and `lg:mt-[150px]` provides sufficient space for larger desktops.
+    <section id={id} className="bg-black py-20 px-6 mt-[300px] xs:mt-[550px] sm:mt-[550px] md:mt-[750px] lg:mt-[150px] xl:mt-[200px]">
       {/* Top Text - maintain horizontal flex */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:max-w-7xl mx-auto mb-10 lg:mb-16 px-2 sm:px-4 md:px-6">
+      <div className="flex flex-col md:flex-col lg:flex-row justify-between items-start lg:max-w-7xl mx-auto mb-10 lg:mb-16 px-2 sm:px-4 md:px-6">
   {/* Left Text */}
   <div className="order-2 lg:order-none text-left w-full lg:w-[150px] xl:w-[150px] lg:mt-10 mt-5">
-    <p className="text-gray-300 w-full lg:w-150 md:w-[200px] sm:w-[180px] text-[8px] sm:text-[10px] md:text-base lg:text-md xl:text-md">
+    <p className="text-gray-300 w-full xl:w-100 lg:w-130 md:w-100 sm:w-[180px] xs:w-[150px] text-[8px] sm:text-[10px] md:text-base lg:text-md xl:text-md">
       Estatify-managed apartments are move-in ready. When you subscribe, you enjoy more benefits than you can imagine, from cozy bedrooms to fully equipped kitchens, free high-speed Wi-Fi, modern air conditioning, and secure parking spaces. Plus, access to amenities like swimming pools, gym facilities, private balconies and gardens, 24/7 security, and convenient laundry services, all designed for your comfort and convenience.
     </p>
   </div>
 
   {/* Right Text */}
-  <div className="order-1 lg:order-none text-right pl-40 max-w-4xl px-1 sm:px-2 md:px-4 -mt-10">
+  <div className="order-1 lg:order-none text-right self-end max-w-4xl px-1 sm:px-2 md:px-4 -mt-10">
     <h1 className="font-semibold text-[#0c878c] leading-tight text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl">
       LISTINGS
     </h1>

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
-const MongoStore = require('connect-mongo'); // <-- add this
+const MongoStore = require('connect-mongo');
 require('dotenv').config();
 require('./config/passport');
 
@@ -22,7 +22,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'fallback-secret',
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }), // <-- use MongoStore here
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     cookie: {
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
@@ -40,9 +40,16 @@ const propertyRoutes = require('./routes/propertyRoutes');
 app.use('/auth', authRoutes);
 app.use('/api/properties', propertyRoutes);
 
-// Connect to MongoDB and start server
-mongoose.connect(process.env.MONGO_URI)
+// Connect to MongoDB with SSL/TLS options
+mongoose.connect(process.env.MONGO_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        ssl: true,
+        tlsAllowInvalidCertificates: false, // ensure valid certs
+        serverSelectionTimeoutMS: 30000,
+    })
     .then(() => {
+        console.log('Connected to MongoDB Atlas successfully');
         app.listen(5000, () => console.log('Server running on port 5000'));
     })
     .catch(err => console.error('MongoDB connection error:', err));

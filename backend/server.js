@@ -10,9 +10,8 @@ require('./config/passport');
 const app = express();
 
 // Middleware
-
 app.use(cors({
-    origin: 'https://shore-maritha.vercel.app',
+    origin: 'https://shore-maritha.vercel.app', // your frontend domain
     credentials: true,
 }));
 
@@ -26,7 +25,7 @@ app.use(session({
     cookie: {
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000,
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
     },
 }));
 
@@ -40,12 +39,15 @@ const propertyRoutes = require('./routes/propertyRoutes');
 app.use('/auth', authRoutes);
 app.use('/api/properties', propertyRoutes);
 
+// ✅ Root route for health check
+app.get('/', (req, res) => {
+    res.send('Estatify API is running 🚀');
+});
+
 // Connect to MongoDB with SSL/TLS options
 mongoose.connect(process.env.MONGO_URI, {
-        // useNewUrlParser and useUnifiedTopology are deprecated and no longer needed.
-        // They are now the default behavior in MongoDB Node.js Driver v4.0.0+
         ssl: true,
-        tlsAllowInvalidCertificates: false, // Ensure valid certs in production!
+        tlsAllowInvalidCertificates: false,
         serverSelectionTimeoutMS: 30000,
     })
     .then(() => {

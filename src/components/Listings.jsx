@@ -33,7 +33,7 @@ const Listings = ({ searchCriteria, id }) => {
     setError(null);
     try {
       const queryString = new URLSearchParams(searchCriteria).toString();
-      const response = await fetch(`http://localhost:5000/api/properties?${queryString}`);
+      const response = await fetch(`https://estatify-gc8a.onrender.com/api/properties?${queryString}`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

@@ -16,7 +16,7 @@ const CreateAccount = () => {
     const password = e.target.password.value;
 
     try {
-      const res = await fetch('http://localhost:5000/auth/register', {
+      const res = await fetch('https://estatify-gc8a.onrender.com/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: fullName, email, password }),

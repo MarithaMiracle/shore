@@ -9,45 +9,45 @@ exports.getProperties = async(req, res) => {
     try {
         let query = {}; // Initialize an empty query object
 
+        // --- Debugging Logs ---
+        console.log('Incoming query parameters (req.query):', req.query);
+
         // --- Basic Filtering Logic (Price and Duration) ---
-        // Price filtering:
-        // Assume frontend sends 'minPrice' and 'maxPrice' query parameters
         if (req.query.minPrice || req.query.maxPrice) {
             query.price = {};
             if (req.query.minPrice) {
-                query.price.$gte = parseFloat(req.query.minPrice); // Greater than or equal
+                query.price.$gte = parseFloat(req.query.minPrice);
             }
             if (req.query.maxPrice) {
-                query.price.$lte = parseFloat(req.query.maxPrice); // Less than or equal
+                query.price.$lte = parseFloat(req.query.maxPrice);
             }
         }
 
-        // Duration filtering:
-        // Assume frontend sends 'duration' query parameter (e.g., 1 for monthly)
         if (req.query.duration) {
-            query.durationMonths = parseInt(req.query.duration, 10); // Exact match for duration
+            query.durationMonths = parseInt(req.query.duration, 10);
         }
 
         // --- Add more filters as needed (e.g., bedrooms, amenities, title search) ---
-        // Example: Bedrooms
         if (req.query.bedrooms) {
             query.bedrooms = parseInt(req.query.bedrooms, 10);
         }
 
-        // Example: Search by title (case-insensitive regex)
         if (req.query.title) {
             query.title = { $regex: req.query.title, $options: 'i' };
         }
 
-        // Example: Search by amenity
-        // If frontend sends 'amenity=wifi', 'amenities' array in DB should contain 'wifi'
         if (req.query.amenity) {
-            query.amenities = { $in: [new RegExp(req.query.amenity, 'i')] }; // Case-insensitive partial match
+            query.amenities = { $in: [new RegExp(req.query.amenity, 'i')] };
         }
 
+        // --- Debugging Log ---
+        console.log('Final Mongoose query object:', query);
 
         // Execute the query
         const properties = await Property.find(query);
+
+        // --- Debugging Log ---
+        console.log('Number of properties found in DB:', properties.length);
 
         res.status(200).json({
             success: true,
@@ -74,7 +74,6 @@ exports.getPropertyById = async(req, res) => {
         res.status(200).json({ success: true, data: property });
     } catch (error) {
         console.error('Error fetching single property:', error);
-        // Mongoose CastError for invalid ID format often results in 500, but 400 is more accurate for bad ID
         if (error.name === 'CastError') {
             return res.status(400).json({ success: false, message: 'Invalid property ID' });
         }

@@ -20,7 +20,7 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/auth/login', {
+      const response = await fetch('https://estatify-gc8a.onrender.com/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -138,7 +138,7 @@ const Login = () => {
 
         <button
           onClick={() => {
-            window.location.href = 'http://localhost:5000/auth/google';
+            window.location.href = 'https://estatify-gc8a.onrender.com/auth/google';
           }}
           disabled={loading}
           className="w-full py-2 text-xs lg:text-base lg:py-2.5 flex items-center justify-center gap-2 border bg-white text-black rounded-md font-semibold hover:bg-black hover:text-white transition cursor-pointer disabled:opacity-50"

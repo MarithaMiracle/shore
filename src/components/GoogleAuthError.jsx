@@ -51,7 +51,7 @@ const GoogleAuthError = () => {
           <button
             onClick={() => {
               // Option to retry Google login
-              window.location.href = 'http://localhost:5000/auth/google';
+              window.location.href = 'https://estatify-gc8a.onrender.com/auth/google';
             }}
             className="w-full py-2 flex items-center justify-center gap-2 border bg-white text-black rounded-lg font-semibold hover:bg-black hover:text-white transition cursor-pointer"
           >

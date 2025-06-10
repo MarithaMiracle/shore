@@ -1,3 +1,5 @@
+// backend/models/Property.js
+
 const mongoose = require('mongoose');
 
 const propertySchema = new mongoose.Schema({
@@ -50,6 +52,10 @@ const propertySchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
+}, {
+    // --- ADD THIS CONFIGURATION BLOCK ---
+    collection: 'Properties' // Explicitly tell Mongoose the collection name
+        // --- END OF ADDITION ---
 });
 
 module.exports = mongoose.model('Property', propertySchema);

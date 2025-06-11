@@ -1,206 +1,112 @@
 // backend/controllers/authController.js
-const bcrypt = require('bcrypt');
+
+const User = require('../models/User');
+const Otp = require('../models/otp'); // Make sure you have this model defined
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-const User = require('../models/user');
-const OTP = require('../models/otp'); // New: Import OTP model
-const sendEmail = require('../utils/sendEmail');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto'); // Used for old token generation, keeping for full context of password resets if needed
 
-const JWT_SECRET = process.env.JWT_SECRET;
-
-// --- Helper function to generate a numeric OTP ---
-// This is a simple 6-digit OTP generator.
+// --- Helper function to generate a 6-digit OTP ---
 const generateOTP = () => {
-    // Generate a random 6-digit number, ensuring it's always 6 digits
-    return Math.floor(100000 + Math.random() * 900000).toString();
+    return Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit number as string
 };
 
-// --- NEW: Request OTP Function ---
-// This function will generate and send an OTP to a user's email for a specific purpose.
-exports.requestOtp = async(req, res) => {
-    const { email, purpose } = req.body; // 'purpose' could be 'registration', 'password_reset', '2fa', 'email_verification'
+// --- Helper function to send emails using Nodemailer ---
+const sendEmail = async(options) => {
+    // 1) Create a transporter using environment variables
+    const transporter = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
+        secure: process.env.EMAIL_PORT == 465, // Use 'true' for 465 (SSL), 'false' for others (like 587 STARTTLS)
+        auth: {
+            user: process.env.EMAIL_USERNAME,
+            pass: process.env.EMAIL_PASSWORD,
+        },
+        // Optional: for self-signed certificates or development (e.g., with Mailtrap)
+        // tls: {
+        //   rejectUnauthorized: false
+        // }
+    });
 
-    if (!email) {
-        return res.status(400).json({ message: 'Email is required.' });
-    }
+    // 2) Define the email options
+    const mailOptions = {
+        from: `Estatify <${process.env.EMAIL_FROM}>`, // Sender address from .env
+        to: options.email, // List of receivers
+        subject: options.subject, // Subject line
+        html: options.html, // HTML body
+        text: options.text, // Plain text body for email clients that don't support HTML
+    };
 
-    // Optional: Add rate limiting here to prevent spamming OTP requests
-    // Example (requires a rate-limiting middleware, e.g., 'express-rate-limit' configured in server.js/authRoutes.js)
-    // If you add this middleware to the route, you don't need manual logic here.
-    // E.g., apply `rateLimitMiddleware` to `router.post('/request-otp', rateLimitMiddleware, authController.requestOtp);`
-
-    try {
-        const user = await User.findOne({ email: email.toLowerCase() });
-
-        if (!user) {
-            // Security best practice: Always send a generic success message
-            // to prevent email enumeration, even if the user doesn't exist.
-            // This prevents attackers from knowing which emails are registered.
-            console.log(`OTP request for non-existent or inactive user: ${email}`);
-            return res.status(200).json({ message: 'If an account exists, an OTP has been sent to your email.' });
-        }
-
-        // --- OTP Generation and Storage ---
-        const otpCode = generateOTP();
-
-        // Optional: Remove any existing active OTPs for this user and purpose
-        // This ensures a user only has one valid OTP at a time for a given action.
-        await OTP.deleteMany({ email: user.email, purpose: purpose });
-
-        const newOtp = new OTP({
-            email: user.email,
-            otp: otpCode,
-            purpose: purpose || 'email_verification' // Default purpose if not provided
-        });
-        await newOtp.save();
-
-        // --- Send OTP Email ---
-        const emailSubject = `Your Estatify OTP for ${purpose.replace(/_/g, ' ').toLowerCase()}`;
-        const emailText = `Your One-Time Password (OTP) for Estatify is: ${otpCode}\n\nThis OTP is valid for 10 minutes. Do not share this code with anyone.`;
-        const emailHtml = `
-            <p>Your One-Time Password (OTP) for Estatify is:</p>
-            <h2 style="color: #0c878c; font-size: 24px; font-weight: bold;">${otpCode}</h2>
-            <p>This OTP is valid for 10 minutes.</p>
-            <p>Do not share this code with anyone.</p>
-            <br>
-            <p>Estatify Team</p>
-        `;
-
-        await sendEmail({
-            to: user.email,
-            subject: emailSubject,
-            text: emailText,
-            html: emailHtml,
-        });
-
-        res.status(200).json({ message: 'OTP sent successfully to your email.' });
-
-    } catch (err) {
-        console.error("Error requesting OTP:", err);
-        res.status(500).json({ message: 'Server error requesting OTP.' });
-    }
+    // 3) Send the email
+    await transporter.sendMail(mailOptions);
 };
 
-// --- NEW: Verify OTP Function ---
-exports.verifyOtp = async(req, res) => {
-    const { email, otp, purpose } = req.body;
-
-    if (!email || !otp) {
-        return res.status(400).json({ message: 'Email and OTP are required.' });
-    }
-
-    try {
-        // Find the latest OTP for the given email and purpose
-        const foundOtp = await OTP.findOne({
-            email: email.toLowerCase(),
-            purpose: purpose || 'email_verification',
-            // createdAt: { $gt: new Date(Date.now() - 10 * 60 * 1000) } // Check if it's within expiry window (TTL index handles this primarily)
-        }).sort({ createdAt: -1 }); // Get the most recent OTP if multiple exist (though unique index prevents this for same purpose)
-
-        if (!foundOtp) {
-            return res.status(400).json({ message: 'Invalid or expired OTP.' });
-        }
-
-        // Compare the provided OTP with the stored OTP
-        if (foundOtp.otp !== otp) {
-            // Optional: Increment failed attempt counter on the user or OTP document
-            // To prevent brute-force attacks on OTPs
-            return res.status(400).json({ message: 'Invalid OTP.' });
-        }
-
-        // If OTP is valid and matches, remove it from the database to prevent reuse
-        await OTP.deleteOne({ _id: foundOtp._id });
-
-        // If you need to return user data or a JWT after successful OTP verification (e.g., for 2FA login)
-        const user = await User.findOne({ email: email.toLowerCase() });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found after OTP verification.' });
-        }
-
-        // For successful verification, you might typically log them in or mark their email as verified
-        // Depending on the 'purpose', you would do different things here.
-        // For example, if purpose was 'email_verification', you'd update user.isVerified = true;
-        // If purpose was '2fa', you'd generate a new JWT and send it back.
-
-        const token = jwt.sign({ id: user._id, email: user.email, name: user.name },
-            JWT_SECRET, { expiresIn: '1h' }
-        );
-
-        res.status(200).json({
-            message: 'OTP verified successfully!',
-            token, // Only include token if this is for a login/2FA flow
-            user: { id: user._id, name: user.name, email: user.email } // Only include user if needed
-        });
-
-    } catch (err) {
-        console.error("Error verifying OTP:", err);
-        res.status(500).json({ message: 'Server error verifying OTP.' });
-    }
-};
-
-// --- Existing Authentication Functions (no changes needed for now) ---
-
-// --- POST /auth/register - Create a new user with email/password ---
+// --- POST /auth/register - Register a new user with email/password ---
+// This function does NOT use OTP for registration, as per your instruction.
+// It creates the user and logs them in immediately by returning a token.
 exports.register = async(req, res) => {
     const { name, email, password } = req.body;
 
     // Basic validation
     if (!name || !email || !password) {
-        return res.status(400).json({ message: 'All fields are required' });
+        return res.status(400).json({ message: 'All fields are required.' });
     }
-    if (password.length < 6) { // Example password strength
+    if (password.length < 6) {
         return res.status(400).json({ message: 'Password must be at least 6 characters long.' });
     }
 
     try {
-        // Normalize email to lowercase for consistent lookup
         let user = await User.findOne({ email: email.toLowerCase() });
 
         if (user) {
-            // User already exists
+            // Check if the user already exists via password registration or Google
             if (user.password) {
-                // Scenario 1: User exists with email/password
                 return res.status(409).json({
                     message: 'An account already exists with this email. Please log in, or use a different email to register.',
                     action: 'LOGIN_EXISTING_EMAIL_PASSWORD'
                 });
             } else if (user.googleId) {
-                // Scenario 2: User exists via Google Auth, but no password set for direct login
                 return res.status(409).json({
                     message: 'An account already exists for this email through Google. Do you want to sign in with Google or set a password for this account?',
                     action: 'GOOGLE_AUTH_EXISTING_EMAIL_NO_PASSWORD'
                 });
             }
-            // Fallback for any other existing user without a password field
             return res.status(409).json({ message: 'User with this email already exists.' });
         }
 
-        // Scenario 3: No user found with this email, proceed with new email/password registration
+        // Create new user
         const newUser = new User({
             name,
             email: email.toLowerCase(),
-            password
+            password // Mongoose pre-save hook will hash this
         });
 
         await newUser.save();
 
-        const token = jwt.sign({ id: newUser._id, email: newUser.email, name: newUser.name },
-            JWT_SECRET, { expiresIn: '1h' }
-        );
+        // Generate JWT token for immediate login after registration
+        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 
+        // Respond with success message, token, and user info
         res.status(201).json({
-            message: 'Registration successful! You are now logged in.',
+            message: 'Registration successful!',
             token,
-            user: { id: newUser._id, name: newUser.name, email: newUser.email },
+            user: {
+                id: newUser._id,
+                name: newUser.name,
+                email: newUser.email,
+                isVerified: newUser.isVerified // Include verification status
+                    // Do NOT include password or sensitive info here
+            }
         });
 
     } catch (err) {
         console.error("Registration error:", err);
-        res.status(500).json({ message: 'Server error during registration' });
+        res.status(500).json({ message: 'Server error during registration. Please try again.' });
     }
 };
 
-// --- POST /auth/login - Email/password login ---
+// --- POST /auth/login - User login with email/password ---
 exports.login = async(req, res) => {
     const { email, password } = req.body;
 
@@ -209,36 +115,32 @@ exports.login = async(req, res) => {
     }
 
     try {
+        // Find user by email
         const user = await User.findOne({ email: email.toLowerCase() });
-
-        if (!user) {
-            return res.status(401).json({ message: 'Invalid email or password.' });
+        if (!user || !user.password) { // Check if user exists and has a password (not just Google user)
+            return res.status(401).json({ message: 'Invalid credentials or account created via Google. Please check your email and password or sign in with Google.' });
         }
 
-        if (!user.password && user.googleId) {
-            return res.status(401).json({
-                message: 'This account was registered through Google. Please sign in with Google.',
-                action: 'REQUIRES_GOOGLE_AUTH'
-            });
-        } else if (user.password) {
-            const isMatch = await user.comparePassword(password);
+        // Compare provided password with hashed password in database
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Invalid credentials.' });
+        }
 
-            if (!isMatch) {
-                return res.status(401).json({ message: 'Invalid email or password.' });
+        // Generate JWT token
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+
+        // Respond with token and user info
+        res.status(200).json({
+            message: 'Logged in successfully!',
+            token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                isVerified: user.isVerified
             }
-
-            const token = jwt.sign({ id: user._id, email: user.email, name: user.name },
-                JWT_SECRET, { expiresIn: '1h' }
-            );
-
-            res.status(200).json({
-                message: 'Login successful!',
-                token,
-                user: { id: user._id, name: user.name, email: user.email },
-            });
-        } else {
-            return res.status(500).json({ message: 'Account setup incomplete. Please contact support.' });
-        }
+        });
 
     } catch (err) {
         console.error("Login error:", err);
@@ -246,30 +148,220 @@ exports.login = async(req, res) => {
     }
 };
 
-// --- Google Auth Callback Handler ---
-exports.googleAuthCallback = async(req, res) => {
-    try {
-        const user = req.user;
+// --- GET /auth/google/callback - Google OAuth callback ---
+exports.googleAuthCallback = (req, res) => {
+    // This is handled by Passport.js. If authentication is successful,
+    // Passport adds the user to req.user.
+    if (!req.user) {
+        return res.redirect('/login?error=Google authentication failed.');
+    }
 
-        const token = jwt.sign({ id: user._id, email: user.email, name: user.name },
-            JWT_SECRET, { expiresIn: '1h' }
+    // Generate JWT token for the Google-authenticated user
+    const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+
+    // Redirect to a frontend page, passing the token (e.g., in query params or local storage post-redirect)
+    // For production, you might set a cookie or redirect to a page that handles token storage securely.
+    // Example: Redirect with token in a way frontend can retrieve it securely (e.g., local storage/cookie set by frontend after parsing URL)
+    res.redirect(`/login?token=${token}&userId=${req.user._id}&userName=${encodeURIComponent(req.user.name)}&userEmail=${encodeURIComponent(req.user.email)}`);
+};
+
+
+// --- POST /auth/request-otp - Request an OTP for various purposes (e.g., password reset, email verification) ---
+exports.requestOtp = async(req, res) => {
+    const { email, purpose } = req.body; // 'purpose' is crucial (e.g., 'password_reset', 'email_verification')
+
+    if (!email || !purpose) {
+        return res.status(400).json({ message: 'Email and purpose are required.' });
+    }
+
+    try {
+        const user = await User.findOne({ email: email.toLowerCase() });
+        if (!user) {
+            // Always send a generic success message for security to prevent email enumeration
+            return res.status(200).json({ message: 'If an account with that email exists, an OTP has been sent.' });
+        }
+
+        const otpCode = generateOTP();
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // OTP valid for 10 minutes
+
+        // Save or update OTP in the database
+        await Otp.findOneAndUpdate({ email: email.toLowerCase(), purpose }, { otp: otpCode, expiresAt, createdAt: Date.now() }, { upsert: true, new: true, setDefaultsOnInsert: true } // upsert: create if not found, new: return updated doc
         );
 
-        const userForFrontend = {
-            id: user._id,
-            name: user.name,
-            email: user.email,
-        };
+        // Customize email content based on purpose
+        const emailSubject = purpose === 'password_reset' ? 'Estatify Password Reset OTP' : 'Estatify Verification OTP';
+        const emailText = purpose === 'password_reset' ?
+            `Your OTP for password reset is: ${otpCode}\n\nThis OTP is valid for 10 minutes.` :
+            `Your verification OTP is: ${otpCode}\n\nThis OTP is valid for 10 minutes.`;
+        const emailHtml = purpose === 'password_reset' ?
+            `<p>Your One-Time Password (OTP) for Estatify password reset is: <strong>${otpCode}</strong></p><p>This OTP is valid for 10 minutes. Please enter it in the app to reset your password.</p>` :
+            `<p>Your One-Time Password (OTP) for Estatify verification is: <strong>${otpCode}</strong></p><p>This OTP is valid for 10 minutes. Please enter it in the app.</p>`;
 
-        res.redirect(`${process.env.FRONTEND_URL}/auth/success?token=${token}&user=${encodeURIComponent(JSON.stringify(userForFrontend))}`);
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: emailSubject,
+                text: emailText,
+                html: emailHtml
+            });
+            res.status(200).json({ message: 'OTP sent successfully!' });
+        } catch (emailError) {
+            console.error('Email sending error (requestOtp):', emailError);
+            // Optionally, remove the OTP if email sending failed to prevent stale OTPs
+            await Otp.deleteOne({ email: email.toLowerCase(), purpose });
+            return res.status(500).json({ message: 'There was an error sending the OTP. Please try again later.' });
+        }
 
     } catch (err) {
-        console.error("Google Auth callback error:", err);
-        res.redirect(`${process.env.FRONTEND_URL}/auth/error?message=${encodeURIComponent('Google login failed. Please try again.')}`);
+        console.error('Request OTP controller error:', err);
+        res.status(500).json({ message: 'Server error during OTP request.' });
     }
 };
 
-// --- POST /auth/request-set-password - For Google Auth users to set a password ---
+// --- POST /auth/verify-otp - Verify an OTP ---
+exports.verifyOtp = async(req, res) => {
+    const { email, otp, purpose } = req.body;
+
+    if (!email || !otp || !purpose) {
+        return res.status(400).json({ message: 'Email, OTP, and purpose are required.' });
+    }
+
+    try {
+        const storedOtp = await Otp.findOne({ email: email.toLowerCase(), purpose });
+
+        if (!storedOtp) {
+            return res.status(400).json({ message: 'Invalid or expired OTP. Please request a new one.' });
+        }
+
+        // Check if OTP has expired
+        if (storedOtp.expiresAt < Date.now()) {
+            await Otp.deleteOne({ _id: storedOtp._id }); // Clean up expired OTP
+            return res.status(400).json({ message: 'OTP has expired. Please request a new one.' });
+        }
+
+        // Check if OTP matches
+        if (storedOtp.otp !== otp) {
+            return res.status(400).json({ message: 'Invalid OTP.' });
+        }
+
+        // OTP is valid! Delete it from the database after successful verification
+        await Otp.deleteOne({ _id: storedOtp._id });
+
+        // Special handling for email verification (if you enable it later for registration)
+        if (purpose === 'email_verification') {
+            const user = await User.findOne({ email: email.toLowerCase() });
+            if (user && !user.isVerified) {
+                user.isVerified = true;
+                await user.save();
+                // Optionally generate token and send user if this completes a registration flow
+                const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+                return res.status(200).json({ message: 'Email verified successfully and user logged in!', token, user });
+            } else if (user && user.isVerified) {
+                return res.status(200).json({ message: 'Email already verified.' });
+            }
+        }
+
+        // For other purposes like 'password_reset', simply confirm OTP success.
+        // The actual password reset is handled by `resetPasswordWithOtp` function.
+        res.status(200).json({ message: 'OTP verified successfully!' });
+
+    } catch (err) {
+        console.error('Verify OTP controller error:', err);
+        res.status(500).json({ message: 'Server error during OTP verification.' });
+    }
+};
+
+// --- POST /auth/forgot-password - Initiates OTP-based password reset ---
+// This function now uses the requestOtp logic with 'password_reset' purpose.
+exports.forgotPassword = async(req, res, next) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ message: 'Email is required.' });
+    }
+
+    try {
+        const user = await User.findOne({ email: email.toLowerCase() });
+
+        if (!user) {
+            // For security, always send a generic success message even if email not found
+            return res.status(200).json({ message: 'If an account with that email exists, an OTP has been sent to it.' });
+        }
+
+        // Set the purpose in the request body for the requestOtp function
+        // and then call requestOtp. This effectively redirects the handling.
+        req.body.purpose = 'password_reset';
+
+        // Pass control to the requestOtp handler.
+        // If requestOtp handles its own response, this `forgotPassword` function
+        // will effectively end here, forwarding `requestOtp`'s response.
+        return exports.requestOtp(req, res); // Call and return to let requestOtp handle the response
+
+    } catch (err) {
+        console.error("Forgot password controller error:", err);
+        res.status(500).json({ message: 'Server error. Please try again later.' });
+    }
+};
+
+// --- POST /auth/reset-password-otp - Resets password using an OTP ---
+exports.resetPasswordWithOtp = async(req, res, next) => {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+        return res.status(400).json({ message: 'Email, OTP, and new password are required.' });
+    }
+
+    try {
+        const user = await User.findOne({ email: email.toLowerCase() });
+        if (!user) {
+            return res.status(400).json({ message: 'User not found.' });
+        }
+
+        // --- Verify the OTP using the existing verifyOtp logic ---
+        // We need to simulate a response object for verifyOtp to write to,
+        // as it's designed as an Express middleware/controller function.
+        const dummyRes = {
+            statusCode: 200, // Default to 200 for internal consistency
+            body: {},
+            status: function(code) { this.statusCode = code; return this; },
+            json: function(data) { this.body = data; return this; }
+        };
+
+        // Temporarily set req.body for verifyOtp call as it expects 'purpose'
+        const originalReqBody = {...req.body }; // Store original req.body if needed
+        req.body = { email, otp, purpose: 'password_reset' };
+
+        await exports.verifyOtp(req, dummyRes); // Call verifyOtp internally
+
+        // Restore original req.body after verifyOtp call
+        req.body = originalReqBody;
+
+        // Check the status code from the dummy response to see if verifyOtp was successful
+        if (dummyRes.statusCode !== 200) {
+            return res.status(dummyRes.statusCode).json({ message: dummyRes.body.message });
+        }
+
+        // If OTP is verified successfully (statusCode is 200), proceed to update password
+        user.password = newPassword; // Mongoose pre-save hook will hash this
+        user.passwordChangedAt = Date.now(); // Optional: track password change time
+
+        // Clean up any old password reset tokens if you were using a link-based system before
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+
+        await user.save(); // Save the user with the new hashed password
+
+        res.status(200).json({ message: 'Password has been reset successfully!' });
+
+    } catch (err) {
+        console.error("Reset password with OTP controller error:", err);
+        res.status(500).json({ message: 'Server error during password reset.' });
+    }
+};
+
+
+// --- POST /auth/request-set-password (for Google-only users to set a password) ---
+// This function sends a password reset link, NOT an OTP, as it's for setting an *initial* password.
 exports.requestSetPassword = async(req, res) => {
     const { email } = req.body;
 
@@ -280,35 +372,39 @@ exports.requestSetPassword = async(req, res) => {
     try {
         const user = await User.findOne({ email: email.toLowerCase() });
 
-        if (!user) {
-            return res.status(200).json({ message: 'If an account exists, a password set link has been sent to your email.' });
+        // Only allow setting a password for users who don't have one (e.g., Google users)
+        if (!user || user.password) {
+            return res.status(400).json({ message: 'User not found or already has a password set.' });
         }
 
-        if (user.password && !user.googleId) {
-            return res.status(400).json({
-                message: 'This account is registered with an email and password. Please use the "Forgot Password" option if you need to reset it.',
-                action: 'USE_FORGOT_PASSWORD'
-            });
-        }
+        // Generate a unique token for password setting
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        const passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+        const passwordResetExpires = Date.now() + 3600000; // 1 hour
 
-        const resetToken = user.generatePasswordResetToken();
+        user.passwordResetToken = passwordResetToken;
+        user.passwordResetExpires = passwordResetExpires;
         await user.save();
 
-        const resetURL = `${process.env.FRONTEND_URL}/set-password/${resetToken}`;
+        const resetURL = `${req.protocol}://${req.get('host')}/set-password/${resetToken}`; // Adjust domain for production
+        const emailText = `You are receiving this because you (or someone else) have requested to set a password for your account.\n\nPlease go to this link to set your password: ${resetURL}\n\nThis link will expire in one hour. If you did not request this, please ignore this email.`;
+        const emailHtml = `<p>You are receiving this because you (or someone else) have requested to set a password for your account.</p><p>Please click this link to set your password: <a href="${resetURL}">${resetURL}</a></p><p>This link will expire in one hour. If you did not request this, please ignore this email.</p>`;
 
         try {
             await sendEmail({
-                to: user.email,
-                subject: 'Set Your Password for Your Account',
-                text: `You are receiving this because you (or someone else) have requested to set a password for your account. Please click on this link to set your password: ${resetURL}\n\nThis link will expire in 1 hour.`
+                email: user.email,
+                subject: 'Estatify Set Your Password',
+                text: emailText,
+                html: emailHtml
             });
-            res.status(200).json({ message: 'Password set link sent to your email.' });
+
+            res.status(200).json({ message: 'Password setup link sent to your email!' });
         } catch (emailError) {
             user.passwordResetToken = undefined;
             user.passwordResetExpires = undefined;
             await user.save();
-            console.error('Error sending password set email:', emailError);
-            return res.status(500).json({ message: 'Error sending password set email. Please try again later.' });
+            console.error('Email sending error (requestSetPassword):', emailError);
+            return res.status(500).json({ message: 'There was an error sending the email. Please try again later.' });
         }
 
     } catch (err) {
@@ -317,13 +413,13 @@ exports.requestSetPassword = async(req, res) => {
     }
 };
 
-// --- POST /auth/set-password/:token - Handles setting the password for Google Auth users ---
+// --- POST /auth/set-password/:token (for Google-only users to set a password via link) ---
 exports.setNewPassword = async(req, res) => {
     const { token } = req.params;
-    const { password } = req.body;
+    const { newPassword } = req.body;
 
-    if (!password || password.length < 6) {
-        return res.status(400).json({ message: 'Password is required and must be at least 6 characters long.' });
+    if (!newPassword || newPassword.length < 6) {
+        return res.status(400).json({ message: 'New password must be at least 6 characters long.' });
     }
 
     try {
@@ -331,121 +427,22 @@ exports.setNewPassword = async(req, res) => {
 
         const user = await User.findOne({
             passwordResetToken: hashedToken,
-            passwordResetExpires: { $gt: Date.now() }
+            passwordResetExpires: { $gt: Date.now() } // Token must not be expired
         });
 
         if (!user) {
-            return res.status(400).json({ message: 'Password set token is invalid or has expired.' });
+            return res.status(400).json({ message: 'Invalid or expired token.' });
         }
 
-        user.password = password;
-        user.passwordResetToken = undefined;
+        user.password = newPassword; // Mongoose pre-save hook will hash this
+        user.passwordResetToken = undefined; // Clear the token fields
         user.passwordResetExpires = undefined;
         await user.save();
 
-        const authToken = jwt.sign({ id: user._id, email: user.email, name: user.name },
-            JWT_SECRET, { expiresIn: '1h' }
-        );
-
-        res.status(200).json({
-            message: 'Password set successfully! You can now log in with your email and new password.',
-            token: authToken,
-            user: { id: user._id, name: user.name, email: user.email },
-        });
+        res.status(200).json({ message: 'Password has been set successfully!' });
 
     } catch (err) {
-        console.error("Set password error:", err);
-        res.status(500).json({ message: 'Server error setting password.' });
-    }
-};
-
-
-// --- POST /auth/forgot-password - Initiates the password reset process ---
-exports.forgotPassword = async(req, res) => {
-    const { email } = req.body;
-
-    if (!email) {
-        return res.status(400).json({ message: 'Email is required.' });
-    }
-
-    try {
-        const user = await User.findOne({ email: email.toLowerCase() });
-
-        if (!user) {
-            return res.status(200).json({ message: 'If an account with that email exists, a password reset link has been sent.' });
-        }
-
-        if (!user.password && user.googleId) {
-            return res.status(400).json({
-                message: 'This account was registered through Google. Please sign in with Google or use the "Set Password" option.',
-                action: 'REQUIRES_GOOGLE_AUTH_OR_SET_PASSWORD'
-            });
-        }
-
-        const resetToken = user.generatePasswordResetToken();
-        await user.save();
-
-        const resetURL = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-
-        try {
-            await sendEmail({
-                to: user.email,
-                subject: 'Password Reset Request',
-                text: `You are receiving this because you (or someone else) have requested the reset of the password for your account. Please click on this link to reset your password: ${resetURL}\n\nThis link will expire in 1 hour.\n\nIf you did not request this, please ignore this email and your password will remain unchanged.`
-            });
-            res.status(200).json({ message: 'Password reset link sent to your email.' });
-        } catch (emailError) {
-            user.passwordResetToken = undefined;
-            user.passwordResetExpires = undefined;
-            await user.save();
-            console.error('Error sending password reset email:', emailError);
-            return res.status(500).json({ message: 'Error sending password reset email. Please try again later.' });
-        }
-
-    } catch (err) {
-        console.error("Forgot password error:", err);
-        res.status(500).json({ message: 'Server error.' });
-    }
-};
-
-// --- PATCH /auth/reset-password/:token - Handles the actual password reset ---
-exports.resetPassword = async(req, res) => {
-    const { token } = req.params;
-    const { password } = req.body;
-
-    if (!password || password.length < 6) {
-        return res.status(400).json({ message: 'Password is required and must be at least 6 characters long.' });
-    }
-
-    try {
-        const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-
-        const user = await User.findOne({
-            passwordResetToken: hashedToken,
-            passwordResetExpires: { $gt: Date.now() }
-        });
-
-        if (!user) {
-            return res.status(400).json({ message: 'Password reset token is invalid or has expired.' });
-        }
-
-        user.password = password;
-        user.passwordResetToken = undefined;
-        user.passwordResetExpires = undefined;
-        await user.save();
-
-        const authToken = jwt.sign({ id: user._id, email: user.email, name: user.name },
-            JWT_SECRET, { expiresIn: '1h' }
-        );
-
-        res.status(200).json({
-            message: 'Password reset successfully! You can now log in with your new password.',
-            token: authToken,
-            user: { id: user._id, name: user.name, email: user.email },
-        });
-
-    } catch (err) {
-        console.error("Reset password error:", err);
-        res.status(500).json({ message: 'Server error resetting password.' });
+        console.error("Set new password error:", err);
+        res.status(500).json({ message: 'Server error during password setting.' });
     }
 };

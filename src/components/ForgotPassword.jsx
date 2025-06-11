@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 
 const ForgotPassword = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Set your backend base URL
+  const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'https://estatify-gc8a.onrender.com';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,21 +18,26 @@ const ForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch('https://estatify-gc8a.onrender.com/auth/forgot-password', {
+      // --- CHANGE: Call /auth/request-otp instead of /auth/forgot-password ---
+      const res = await fetch(`${API_BASE_URL}/auth/request-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        // --- IMPORTANT: Specify the purpose as 'password_reset' ---
+        body: JSON.stringify({ email, purpose: 'password_reset' }), 
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        setMessage(data.message || 'Password reset email sent.');
+        setMessage(data.message || 'OTP sent! Please check your email to reset your password.');
+        // --- NEW: Redirect to the OTP reset page, passing the email via state ---
+        navigate('/reset-password-otp', { state: { email: email } });
       } else {
-        setErrorMessage(data.message || 'Failed to send reset email.');
+        setErrorMessage(data.message || 'Failed to send OTP. Please try again.');
       }
     } catch (err) {
       setErrorMessage('Network error. Please try again.');
+      console.error('Request OTP error:', err); // Log error for debugging
     } finally {
       setIsLoading(false);
     }
@@ -93,7 +103,7 @@ const ForgotPassword = () => {
             disabled={isLoading}
             className="w-full py-2 text-xs lg:text-base lg:py-2.5 rounded-md border border-[#0c878c] hover:border-[#0c878c] text-white bg-[#0c878c] hover:bg-black hover:text-[#0c878c] font-semibold transition-colors duration-300 cursor-pointer"
           >
-            {isLoading ? 'Sending...' : 'Send Reset Email'}
+            {isLoading ? 'Sending OTP...' : 'Send Reset OTP'}
           </button>
         </form>
 

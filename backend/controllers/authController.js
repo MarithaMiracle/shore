@@ -153,7 +153,7 @@ exports.googleAuthCallback = (req, res) => {
     // This is handled by Passport.js. If authentication is successful,
     // Passport adds the user to req.user.
     if (!req.user) {
-        res.redirect(`${process.env.FRONTEND_URL}/auth/error?message=${encodeURIComponent('Google login failed. Please try again.')}`);
+        return res.redirect('/auth/error?error=Google authentication failed.');
 
     }
 
@@ -163,7 +163,7 @@ exports.googleAuthCallback = (req, res) => {
     // Redirect to a frontend page, passing the token (e.g., in query params or local storage post-redirect)
     // For production, you might set a cookie or redirect to a page that handles token storage securely.
     // Example: Redirect with token in a way frontend can retrieve it securely (e.g., local storage/cookie set by frontend after parsing URL)
-    res.redirect(`${process.env.FRONTEND_URL}/auth/success?token=${token}&user=${encodeURIComponent(JSON.stringify(userForFrontend))}`);
+    res.redirect(`/auth/success?token=${token}&userId=${req.user._id}&userName=${encodeURIComponent(req.user.name)}&userEmail=${encodeURIComponent(req.user.email)}`);
 
 };
 

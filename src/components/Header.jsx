@@ -13,47 +13,55 @@ import {
 const Header = () => {
   const array = ["Listings", "Testimonials", "FAQs", "Products", "Features"];
   
-  // Use a state to hold combined user info, including name
+  // user state to indicate login status (based on token validity)
   const [user, setUser] = useState(null); 
-  // State to hold just the display name
+  // displayName state to hold the first name for display
   const [displayName, setDisplayName] = useState(null);
 
   useEffect(() => {
+    console.log('Header useEffect running...'); 
     const token = localStorage.getItem('token');
-    const storedUserName = localStorage.getItem('userName'); // Get the stored name
+    const storedUserName = localStorage.getItem('userName'); // Get the stored name from localStorage
+
+    console.log('Token from localStorage:', token);
+    console.log('UserName from localStorage (before split):', storedUserName); 
 
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        // Set the user ID from the token for internal checks
-        setUser({ id: decoded.id }); 
+        console.log('Decoded token:', decoded); // Should show { id: '...' }
+        setUser({ id: decoded.id }); // Set user based on decoded token ID
         
-        // Use the name from localStorage for display
         if (storedUserName) {
-          setDisplayName(storedUserName.split(' ')[0]); // Get first name
+          const firstPartName = storedUserName.split(' ')[0]; // Get only the first name
+          setDisplayName(firstPartName); 
+          console.log('Display Name set to:', firstPartName);
         } else {
-          // Fallback if name is not in localStorage (e.g., old login)
-          setDisplayName('User'); // Default display name
+          // Fallback if userName is not in localStorage (e.g., non-Google login or old data)
+          setDisplayName('User'); 
+          console.log('Display Name set to "User" (fallback).');
         }
       } catch (err) {
-        console.error('Invalid token:', err);
+        console.error('Invalid token in Header:', err); // Log any token decoding errors
         setUser(null);
         setDisplayName(null);
       }
     } else {
+      // No token found, so user is not logged in
       setUser(null);
       setDisplayName(null);
+      console.log('No token found in localStorage.');
     }
-  }, []); // Empty dependency array means this runs once on mount
+  }, []); // Empty dependency array means this runs once on component mount
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('userId'); // Also remove other user data
+    localStorage.removeItem('userId'); 
     localStorage.removeItem('userName');
-    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userEmail'); // Clear all user-related data
     setUser(null);
     setDisplayName(null);
-    window.location.reload(); // Reload to refresh auth state across app
+    window.location.reload(); // Reload to ensure application state is reset
   };
 
   const getSectionId = (itemName) => {

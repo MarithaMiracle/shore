@@ -30,21 +30,21 @@ const WhyEstatify = ({ id }) => {
         <div className="flex-1">
           <img src="/Fully furnished.svg" alt="Home" className="w-12 h-12 xs:w-12 xs:h-12 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mx-auto lg:mb-4 mb-2" />
           <h3 className="text-md xs:text-md sm:text-md md:text-base lg:text-xl font-bold text-white">Fully Furnished Apartments</h3>
-          <p className="text-gray-400 text-sm xs:text-sm sm:text-sm md:text-sm lg:text-sm lg:mt-2 mb-5">Find fully furnished apartments suited to the duration of your stay, a few months or a couple of years</p>
+          <p className="text-gray-400 text-sm xs:text-sm sm:text-sm md:text-sm lg:text-sm lg:mt-2 lg:mb-5 mb-5">Find fully furnished apartments suited to the duration of your stay, a few months or a couple of years</p>
         </div>
 
         {/* Icon Box 2 */}
         <div className="flex-1">
           <img src="/Flexible payments.svg" alt="Location" className="w-12 h-12 xs:w-12 xs:h-12 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mx-auto lg:mb-4 mb-2" />
           <h3 className="text-md xs:text-md sm:text-md md:text-base lg:text-xl font-bold text-white">Flexible Payment</h3>
-          <p className="text-gray-400 text-sm xs:text-sm sm:text-sm md:text-sm lg:text-sm lg:mt-2">Estatify offers monthly, quarterly or annual payment terms to fit your unique schedule</p>
+          <p className="text-gray-400 text-sm xs:text-sm sm:text-sm md:text-sm lg:text-sm lg:mt-2 mb-5">Estatify offers monthly, quarterly or annual payment terms to fit your unique schedule</p>
         </div>
 
         {/* Icon Box 3 */}
         <div className="flex-1">
           <img src="/Co-sharing.svg" alt="Flexible" className="w-12 h-12 xs:w-12 xs:h-12 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mx-auto lg:mb-4 mb-2" />
           <h3 className="text-md xs:text-md sm:text-md md:text-base lg:text-xl font-bold text-white">Co-sharing Option</h3>
-          <p className="text-gray-400 text-sm xs:text-sm sm:text-sm md:text-sm lg:text-sm lg:mt-2 mb-5">Choose between having the space to yourself or flat-sharing with verified housemates</p>
+          <p className="text-gray-400 text-sm xs:text-sm sm:text-sm md:text-sm lg:text-sm lg:mt-2 lg:mb-5 mb-5">Choose between having the space to yourself or flat-sharing with verified housemates</p>
         </div>
 
         {/* Icon Box 4 */}

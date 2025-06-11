@@ -91,13 +91,13 @@ const Testimonials = ({ id }) => {
                   ”
                 </span>
               </blockquote>
-              <p className="text-[#0c878c] lg:mt-12 mt-10 text-sm lg:text-lg font-bold tracking-wide">{item.author}</p>
+              <p className="text-[#0c878c] lg:mt-12 mt-6 text-sm lg:text-lg font-bold tracking-wide">{item.author}</p>
             </div>
           ))}
         </div>
 
         {/* Dots slider */}
-        <div className="flex justify-center -mt-20 space-x-3 lg:mt-8">
+        <div className="flex justify-center -mt-30 space-x-3 lg:mt-8">
           {testimonialsData.map((_, idx) => (
             <button
               key={idx}

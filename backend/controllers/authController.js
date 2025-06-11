@@ -148,23 +148,27 @@ exports.login = async(req, res) => {
     }
 };
 
-// --- GET /auth/google/callback - Google OAuth callback ---
-exports.googleAuthCallback = (req, res) => {
-    // This is handled by Passport.js. If authentication is successful,
-    // Passport adds the user to req.user.
-    if (!req.user) {
-        return res.redirect('/login?error=Google authentication failed.');
+// --- Google Auth Callback Handler ---
+exports.googleAuthCallback = async(req, res) => {
+    try {
+        const user = req.user;
 
+        const token = jwt.sign({ id: user._id, email: user.email, name: user.name },
+            JWT_SECRET, { expiresIn: '1h' }
+        );
+
+        const userForFrontend = {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+        };
+
+        res.redirect(`${process.env.FRONTEND_URL}/auth/success?token=${token}&user=${encodeURIComponent(JSON.stringify(userForFrontend))}`);
+
+    } catch (err) {
+        console.error("Google Auth callback error:", err);
+        res.redirect(`${process.env.FRONTEND_URL}/auth/error?message=${encodeURIComponent('Google login failed. Please try again.')}`);
     }
-
-    // Generate JWT token for the Google-authenticated user
-    const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
-
-    // Redirect to a frontend page, passing the token (e.g., in query params or local storage post-redirect)
-    // For production, you might set a cookie or redirect to a page that handles token storage securely.
-    // Example: Redirect with token in a way frontend can retrieve it securely (e.g., local storage/cookie set by frontend after parsing URL)
-    res.redirect(`/login?token=${token}&userId=${req.user._id}&userName=${encodeURIComponent(req.user.name)}&userEmail=${encodeURIComponent(req.user.email)}`);
-
 };
 
 

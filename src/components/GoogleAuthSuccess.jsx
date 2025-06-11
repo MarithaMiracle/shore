@@ -12,20 +12,34 @@ const GoogleAuthSuccess = () => {
         // Parse query parameters from the URL
         const params = new URLSearchParams(location.search);
         const token = params.get('token');
-        // --- CHANGE START ---
         const userId = params.get('userId');
-        const userName = params.get('userName');
+        const userName = params.get('userName'); 
         const userEmail = params.get('userEmail');
-        // --- CHANGE END ---
 
-        // Now check for all the parameters that are actually being sent
+        // --- START OF DIAGNOSTIC LOGS ---
+        console.log('--- GoogleAuthSuccess component running ---');
+        console.log('Params extracted from URL:');
+        console.log('  token:', token ? 'Present' : 'Missing'); // Log if token is present or missing
+        console.log('  userId:', userId); 
+        console.log('  userName:', userName); // IMPORTANT: Check value here!
+        console.log('  userEmail:', userEmail);
+        // --- END OF DIAGNOSTIC LOGS ---
+
         if (token && userId && userName && userEmail) { // Check for all required params
           // Store the token and user data individually
           localStorage.setItem('token', token);
           localStorage.setItem('userId', userId);
-          localStorage.setItem('userName', userName);
-          localStorage.setItem('userEmail', userEmail); // Store email if needed on frontend
+          localStorage.setItem('userName', userName); // This is where the name is saved
+          localStorage.setItem('userEmail', userEmail); 
           
+          console.log('GoogleAuthSuccess: Data successfully saved to localStorage!'); // Confirm save
+          console.log('localStorage items set:');
+          console.log('  token:', localStorage.getItem('token') ? 'Set' : 'Failed');
+          console.log('  userId:', localStorage.getItem('userId'));
+          console.log('  userName:', localStorage.getItem('userName')); // Verify it was set
+          console.log('  userEmail:', localStorage.getItem('userEmail'));
+
+
           setMessage('Login successful! Redirecting...');
           // Redirect to your main application dashboard or home page
           setTimeout(() => {
@@ -33,7 +47,7 @@ const GoogleAuthSuccess = () => {
           }, 2000); // Short delay for user to see the message
         } else {
           setMessage('Login failed: Missing authentication data. Please try again.');
-          // Log the actual state of parameters for debugging
+          // Log the actual state of parameters for debugging if missing
           console.error('GoogleAuthSuccess: Missing token or user data in URL.', {
             token: token,
             userId: userId,
@@ -46,7 +60,7 @@ const GoogleAuthSuccess = () => {
           }, 2000);
         }
       } catch (error) {
-        console.error('Error handling Google Auth success:', error);
+        console.error('Error handling Google Auth success in GoogleAuthSuccess:', error);
         setMessage('An error occurred during login. Please try again.');
         setTimeout(() => {
             navigate('/login');

@@ -12,25 +12,48 @@ import {
 
 const Header = () => {
   const array = ["Listings", "Testimonials", "FAQs", "Products", "Features"];
-  const [user, setUser] = useState(null);
+  
+  // Use a state to hold combined user info, including name
+  const [user, setUser] = useState(null); 
+  // State to hold just the display name
+  const [displayName, setDisplayName] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const storedUserName = localStorage.getItem('userName'); // Get the stored name
+
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        setUser(decoded);
+        // Set the user ID from the token for internal checks
+        setUser({ id: decoded.id }); 
+        
+        // Use the name from localStorage for display
+        if (storedUserName) {
+          setDisplayName(storedUserName.split(' ')[0]); // Get first name
+        } else {
+          // Fallback if name is not in localStorage (e.g., old login)
+          setDisplayName('User'); // Default display name
+        }
       } catch (err) {
         console.error('Invalid token:', err);
         setUser(null);
+        setDisplayName(null);
       }
+    } else {
+      setUser(null);
+      setDisplayName(null);
     }
-  }, []);
+  }, []); // Empty dependency array means this runs once on mount
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId'); // Also remove other user data
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
     setUser(null);
-    window.location.reload();
+    setDisplayName(null);
+    window.location.reload(); // Reload to refresh auth state across app
   };
 
   const getSectionId = (itemName) => {
@@ -55,7 +78,7 @@ const Header = () => {
 />
 
       {/* Desktop Navigation */}
-      <div className="flex justify-center hidden lg:flex">
+      <div className="lg:flex justify-center hidden">
         <ul className="flex gap-6 items-center px-[3rem] py-3 bg-[#141618] rounded-full border border-gray-700 mx-auto">
           {array.map((item, index) => (
             <li key={index}>

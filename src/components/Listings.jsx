@@ -109,7 +109,7 @@ const Listings = ({ searchCriteria, id }) => {
       <div className="flex flex-col md:flex-col lg:flex-row justify-between items-start lg:max-w-7xl mx-auto mb-10 lg:mb-16 px-2 sm:px-4 md:px-6">
   {/* Left Text */}
   <div className="order-2 lg:order-none text-left w-full lg:w-[150px] xl:w-[150px] lg:mt-10 mt-5">
-    <p className="text-gray-300 w-full xl:w-100 lg:w-130 md:w-100 sm:w-[180px] xs:w-[150px] text-xs sm:text-sm md:text-base lg:text-md xl:text-md">
+    <p className="text-gray-300 w-full xl:w-100 lg:w-150 md:w-100 sm:w-[180px] xs:w-[150px] text-xs sm:text-sm md:text-base lg:text-md xl:text-md">
       Estatify-managed apartments are move-in ready. When you subscribe, you enjoy more benefits than you can imagine, from cozy bedrooms to fully equipped kitchens, free high-speed Wi-Fi, modern air conditioning, and secure parking spaces. Plus, access to amenities like swimming pools, gym facilities, private balconies and gardens, 24/7 security, and convenient laundry services, all designed for your comfort and convenience.
     </p>
   </div>

@@ -12,7 +12,7 @@ const Faqs = ({ id }) => {
       </h1>
 
       {/* Small Description Below the Texts */}
-      <p className="lg:mt-4 mt-2 lg:ml-20 text-sm xs:text-sm sm:text-sm md:text-sm lg:text-base text-gray-400 lg:max-w-xl max-w-[15rem]">
+      <p className="lg:mt-4 mt-2 lg:ml-20 text-sm xs:text-sm sm:text-sm md:text-sm lg:text-base text-gray-400 lg:max-w-xl max-w-full">
         Get quick answers to all your questions and concerns about Estatify and Estatify homes. Whether as a member, host or just a visitor, we will have an answer waiting for you.
       </p>
 

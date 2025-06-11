@@ -40,7 +40,15 @@ const Login = () => {
 
       const { token, user } = data;
       localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user)); // Keep storing the full user object
+
+      // --- ADD THIS LINE ---
+      // Store the user's name separately for consistent Header display
+      if (user && user.name) {
+        localStorage.setItem('userName', user.name); 
+      }
+      // --- END ADDITION ---
+
       navigate('/');
     } catch (error) {
       console.error('Login error:', error);

@@ -127,7 +127,7 @@ const Listings = ({ searchCriteria, id }) => {
 
 
       {/* Carousel + Description */}
-      <div className="max-w-7xl mx-auto lg:flex grid grid-cols-1 space-x-4 md:space-x-8 lg:space-x-10 items-center relative
+      <div className="lg:max-w-7xl max-w-full mx-auto lg:flex grid grid-cols-1 space-x-4 md:space-x-8 lg:space-x-10 items-center relative
                       px-2 sm:px-4 md:px-6">
 
         {/* Left - Carousel Images */}

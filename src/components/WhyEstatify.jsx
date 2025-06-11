@@ -25,7 +25,7 @@ const WhyEstatify = ({ id }) => {
       </div>
 
       {/* Icon Grid */}
-      <div className="grid grid-cols-4 lg:flex justify-between items-start -mt-5 lg:mt-40 max-w-3xl xs:max-w-4xl sm:max-w-5xl md:max-w-6xl lg:max-w-7xl mx-auto lg:gap-x-4 gap-x-10 sm:space-x-6 lg:space-x-20 text-center">
+      <div className="grid grid-cols-1 lg:flex justify-between items-start -mt-5 lg:mt-40 max-w-3xl xs:max-w-4xl sm:max-w-5xl md:max-w-6xl lg:max-w-7xl mx-auto lg:gap-x-4 gap-x-10 sm:space-x-6 lg:space-x-20 text-center">
         {/* Icon Box 1 */}
         <div className="flex-1">
           <img src="/Fully furnished.svg" alt="Home" className="w-10 h-10 xs:w-10 xs:h-10 sm:w-10 sm:h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 mx-auto lg:mb-4 mb-2" />

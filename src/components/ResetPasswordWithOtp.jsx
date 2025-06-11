@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom'; // Import Link for navigation
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 
 const ResetPasswordWithOtp = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const ResetPasswordWithOtp = () => {
 
   const inputRefs = useRef([]); // Ref for OTP input elements
 
-  const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'https://estatify-gc8a.onrender.com'; // Ensure this matches your backend URL
+  const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'https://estatify-gc8a.onrender.com';
 
   useEffect(() => {
     if (location.state && location.state.email) {
@@ -24,18 +24,23 @@ const ResetPasswordWithOtp = () => {
       setError('Please provide your email to reset password. Redirecting...');
       setTimeout(() => navigate('/forgot-password'), 3000);
     }
+    // Set initial focus to the first OTP input if email is present
+    if (location.state && location.state.email && inputRefs.current[0]) {
+        inputRefs.current[0].focus();
+    }
   }, [location.state, navigate]);
 
   // Handler for individual OTP input changes
   const handleOtpChange = (e, index) => {
     const { value } = e.target;
+    // Only allow single digit input
     if (value.length > 1) return;
 
     const newOtpDigits = [...otpDigits];
     newOtpDigits[index] = value;
     setOtpDigits(newOtpDigits);
 
-    // Auto-focus to next input
+    // Auto-focus to next input if a digit was entered and not the last box
     if (value && index < otpDigits.length - 1) {
       inputRefs.current[index + 1].focus();
     }
@@ -111,7 +116,7 @@ const ResetPasswordWithOtp = () => {
       style={{ fontFamily: 'Britannic Bold' }}
       className="relative min-h-screen bg-black text-white flex items-center justify-center px-2"
     >
-      {/* Background grid - Same design */}
+      {/* Background grid */}
       <div
         className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none"
         style={{
@@ -124,7 +129,7 @@ const ResetPasswordWithOtp = () => {
         }}
       />
 
-      {/* Form container - Same design */}
+      {/* Form container */}
       <div
         className="relative z-10 bg-black/90 backdrop-blur-xl rounded-lg w-full max-w-xs p-4 pt-16 mt-12 shadow-xl space-y-3
           lg:max-w-md lg:p-8 lg:pt-24 lg:space-y-6"
@@ -168,6 +173,7 @@ const ResetPasswordWithOtp = () => {
                 onFocus={(e) => (e.target.style.borderColor = '#0c878c')}
                 onBlur={(e) => (e.target.style.borderColor = digit ? '#0c878c' : 'rgb(75 85 99)')}
                 disabled={isLoading}
+                autoComplete="off" // <<<--- ADDED THIS LINE
               />
             ))}
           </div>
@@ -185,6 +191,7 @@ const ResetPasswordWithOtp = () => {
             onBlur={(e) => (e.target.style.borderColor = 'rgb(75 85 99)')}
             required
             disabled={isLoading}
+            autoComplete="new-password" // Good practice for new password fields
           />
           
           {/* Confirm Password Input */}
@@ -200,6 +207,7 @@ const ResetPasswordWithOtp = () => {
             onBlur={(e) => (e.target.style.borderColor = 'rgb(75 85 99)')}
             required
             disabled={isLoading}
+            autoComplete="new-password" // Good practice for confirm password fields
           />
           
           {/* Reset Button */}

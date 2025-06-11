@@ -7,9 +7,9 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto'); // Used for old token generation, keeping for full context of password resets if needed
 
-// --- Helper function to generate a 6-digit OTP ---
+// --- Helper function to generate a 4-digit OTP ---
 const generateOTP = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit number as string
+    return Math.floor(1000 + Math.random() * 9000).toString(); // 4-digit number as string
 };
 
 // --- Helper function to send emails using Nodemailer ---

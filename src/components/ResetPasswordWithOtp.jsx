@@ -1,31 +1,53 @@
 // frontend/src/pages/ResetPasswordWithOtp.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const ResetPasswordWithOtp = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // To get email from state
+  const location = useLocation();
   
-  const [email, setEmail] = useState(''); // Email should be pre-filled from previous page
-  const [otp, setOtp] = useState('');
+  const [email, setEmail] = useState('');
+  const [otpDigits, setOtpDigits] = useState(['', '', '', '']); // Array for 4 OTP digits
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'https://estatify-gc8a.onrender.com';
+  const inputRefs = useRef([]); // Ref for OTP input elements
+
+  const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000'; // Ensure this matches your backend URL
 
   useEffect(() => {
-    // Attempt to get email from navigation state
     if (location.state && location.state.email) {
       setEmail(location.state.email);
     } else {
-      // If no email is provided via state, perhaps redirect back or prompt user
       setError('Please provide your email to reset password. Redirecting...');
-      setTimeout(() => navigate('/forgot-password'), 3000); // Redirect after 3 seconds
+      setTimeout(() => navigate('/forgot-password'), 3000);
     }
   }, [location.state, navigate]);
+
+  // Handler for individual OTP input changes
+  const handleOtpChange = (e, index) => {
+    const { value } = e.target;
+    if (value.length > 1) return; // Prevent pasting more than one digit
+
+    const newOtpDigits = [...otpDigits];
+    newOtpDigits[index] = value;
+    setOtpDigits(newOtpDigits);
+
+    // Auto-focus to next input
+    if (value && index < otpDigits.length - 1) {
+      inputRefs.current[index + 1].focus();
+    }
+  };
+
+  // Handler for backspace key in OTP inputs
+  const handleOtpKeyDown = (e, index) => {
+    if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
+      inputRefs.current[index - 1].focus();
+    }
+  };
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
@@ -33,10 +55,18 @@ const ResetPasswordWithOtp = () => {
     setError('');
     setIsLoading(true);
 
+    const otp = otpDigits.join(''); // Combine digits to form the full OTP string
+
     if (!email || !otp || !newPassword || !confirmPassword) {
       setError('All fields are required.');
       setIsLoading(false);
       return;
+    }
+
+    if (otp.length !== 4) { // Validate OTP length (assuming 4 digits now)
+        setError('Please enter a 4-digit OTP.');
+        setIsLoading(false);
+        return;
     }
 
     if (newPassword.length < 6) {
@@ -52,8 +82,6 @@ const ResetPasswordWithOtp = () => {
     }
 
     try {
-      // This will be a new endpoint on your backend specifically for OTP-based reset
-      // We'll modify the backend's `resetPassword` or create a new one for this purpose.
       const res = await fetch(`${API_BASE_URL}/auth/reset-password-otp`, { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -64,11 +92,9 @@ const ResetPasswordWithOtp = () => {
 
       if (res.ok) {
         setMessage(data.message || 'Password reset successfully! You can now log in.');
-        // Clear form fields
-        setOtp('');
+        setOtpDigits(['', '', '', '']); // Clear OTP fields
         setNewPassword('');
         setConfirmPassword('');
-        // After success, navigate to login page
         setTimeout(() => navigate('/login'), 2000); 
       } else {
         setError(data.message || 'Password reset failed. Invalid OTP or expired.');
@@ -127,20 +153,27 @@ const ResetPasswordWithOtp = () => {
         )}
 
         <form className="space-y-2 lg:space-y-4" onSubmit={handleResetPassword}>
-          <input
-            name="otp"
-            type="text"
-            placeholder="One-Time Password (OTP)"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            maxLength={6} // Assuming 6-digit OTP
-            className="w-full px-2 py-1.5 text-xs lg:text-base lg:px-4 lg:py-2.5 bg-transparent border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none"
-            style={{ caretColor: '#0c878c' }}
-            onFocus={(e) => (e.target.style.borderColor = '#0c878c')}
-            onBlur={(e) => (e.target.style.borderColor = 'rgb(75 85 99)')}
-            required
-            disabled={isLoading}
-          />
+          {/* OTP Input Boxes */}
+          <div className="flex justify-center space-x-2 lg:space-x-4">
+            {otpDigits.map((digit, index) => (
+              <input
+                key={index}
+                type="text"
+                maxLength="1" // Only one character per box
+                value={digit}
+                onChange={(e) => handleOtpChange(e, index)}
+                onKeyDown={(e) => handleOtpKeyDown(e, index)}
+                ref={(el) => (inputRefs.current[index] = el)} // Store ref to each input
+                className="w-10 h-10 lg:w-12 lg:h-12 text-center text-xl lg:text-2xl font-bold bg-transparent border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none"
+                style={{ caretColor: '#0c878c', borderColor: digit ? '#0c878c' : 'rgb(75 85 99)' }} // Highlight active/filled boxes
+                onFocus={(e) => (e.target.style.borderColor = '#0c878c')}
+                onBlur={(e) => (e.target.style.borderColor = digit ? '#0c878c' : 'rgb(75 85 99)')}
+                disabled={isLoading}
+              />
+            ))}
+          </div>
+
+          {/* New Password Input */}
           <input
             name="newPassword"
             type="password"
@@ -154,6 +187,8 @@ const ResetPasswordWithOtp = () => {
             required
             disabled={isLoading}
           />
+          
+          {/* Confirm Password Input */}
           <input
             name="confirmPassword"
             type="password"
@@ -167,6 +202,8 @@ const ResetPasswordWithOtp = () => {
             required
             disabled={isLoading}
           />
+          
+          {/* Reset Button */}
           <button
             type="submit"
             className="w-full py-2 text-xs lg:text-base lg:py-2.5 rounded-md border border-[#0c878c] hover:border-[#0c878c] text-white bg-[#0c878c] hover:bg-black hover:text-[#0c878c] font-semibold transition-colors duration-300 cursor-pointer"

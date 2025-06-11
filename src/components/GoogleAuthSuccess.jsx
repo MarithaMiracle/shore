@@ -12,19 +12,34 @@ const GoogleAuthSuccess = () => {
         // Parse query parameters from the URL
         const params = new URLSearchParams(location.search);
         const token = params.get('token');
-        const userString = params.get('user'); // Assuming user object is stringified
+        // --- CHANGE START ---
+        const userId = params.get('userId');
+        const userName = params.get('userName');
+        const userEmail = params.get('userEmail');
+        // --- CHANGE END ---
 
-        if (token && userString) {
+        // Now check for all the parameters that are actually being sent
+        if (token && userId && userName && userEmail) { // Check for all required params
+          // Store the token and user data individually
           localStorage.setItem('token', token);
-          localStorage.setItem('user', userString); // Store the user data
+          localStorage.setItem('userId', userId);
+          localStorage.setItem('userName', userName);
+          localStorage.setItem('userEmail', userEmail); // Store email if needed on frontend
+          
           setMessage('Login successful! Redirecting...');
           // Redirect to your main application dashboard or home page
           setTimeout(() => {
-            navigate('/');
+            navigate('/'); // Redirect to home or dashboard
           }, 2000); // Short delay for user to see the message
         } else {
           setMessage('Login failed: Missing authentication data. Please try again.');
-          console.error('GoogleAuthSuccess: Missing token or user data in URL.');
+          // Log the actual state of parameters for debugging
+          console.error('GoogleAuthSuccess: Missing token or user data in URL.', {
+            token: token,
+            userId: userId,
+            userName: userName,
+            userEmail: userEmail
+          });
           // Redirect to login or an error page after a delay
           setTimeout(() => {
             navigate('/login');

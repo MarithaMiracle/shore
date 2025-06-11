@@ -53,8 +53,8 @@ const Testimonials = ({ id }) => {
       
       {/* Left Side */}
       <div className="flex-1 order-2 lg:order-none bg-black text-white -mt-20 flex flex-col justify-center relative px-10 py-12">
-        <h2 className="text-[#0c878c] text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-semibold lg:mb-4 mb-2">TESTIMONIALS</h2>
-        <p className="text-sm xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl lg:mt-4 mt-2 text-gray-300">Why Customers Love Us</p>
+        <h2 className="text-[#0c878c] text-lg xs:text-lg sm:text-lg md:text-lg lg:text-xl font-semibold lg:mb-4 mb-2">TESTIMONIALS</h2>
+        <p className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl lg:mt-4 mt-2 text-gray-300">Why Customers Love Us</p>
 
         {/* Carousel */}
         <div
@@ -74,7 +74,7 @@ const Testimonials = ({ id }) => {
               }`}
               style={{ transform: index === current ? 'scale(1)' : 'scale(0.95)', transition: 'transform 1s ease' }}
             >
-              <blockquote className="text-gray-300 text-[10px] xs:text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed italic relative pl-10 pr-10">
+              <blockquote className="text-gray-300 text-sm xs:text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed italic relative pl-10 pr-10">
                 <span
                   className="absolute left-0 top-0 text-[#0c878c] text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl select-none"
                   aria-hidden="true"
@@ -102,7 +102,7 @@ const Testimonials = ({ id }) => {
             <button
               key={idx}
               onClick={() => goToSlide(idx)}
-              className={`w-1 h-1 lg:w-3 lg:h-3 cursor-pointer rounded-full transition-all duration-300 ${
+              className={`w-2 h-2 lg:w-3 lg:h-3 cursor-pointer rounded-full transition-all duration-300 ${
                 current === idx ? 'bg-[#0c878c] scale-125 shadow-lg' : 'bg-gray-600 hover:bg-[#0a6c70]'
               }`}
               aria-label={`Go to testimonial ${idx + 1}`}

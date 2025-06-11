@@ -4,7 +4,7 @@ import React from 'react'
 const Faqs = ({ id }) => { 
   return (
     // Apply the received 'id' prop to the outermost section
-    <section id={id} className="bg-black lg:py-20 py-10 px-6 mt-10 lg:mt-30"> {/* <-- Added 'id={id}' here */}
+    <section id={id} className="bg-black lg:py-20 py-10 px-6 mt-20 lg:mt-30"> {/* <-- Added 'id={id}' here */}
       {/* Heading & Subheading */}
       <h1 className="lg:ml-20 font-semibold text-lg xs:text-lg sm:text-lg md:text-lg lg:text-xl text-[#0c878c] leading-tight">
         COMMON QUESTIONS

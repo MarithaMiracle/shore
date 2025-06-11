@@ -91,7 +91,7 @@ const Testimonials = ({ id }) => {
                   ”
                 </span>
               </blockquote>
-              <p className="text-[#0c878c] lg:mt-12 mt-6 text-[10px] lg:text-lg font-bold tracking-wide">{item.author}</p>
+              <p className="text-[#0c878c] lg:mt-12 mt-6 text-sm lg:text-lg font-bold tracking-wide">{item.author}</p>
             </div>
           ))}
         </div>

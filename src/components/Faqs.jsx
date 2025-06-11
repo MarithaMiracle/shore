@@ -22,7 +22,7 @@ const Faqs = ({ id }) => {
         <details className="border-b border-gray-700">
           <summary className="cursor-pointer flex justify-between items-center text-md xs:text-md sm:text-md md:text-base lg:text-lg font-medium hover:text-[#0c878c] lg:pb-6 pb-3">
             How does Estatify work?
-            <span className="text-[#0c878c] text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl">⌄</span>
+            <span className="text-[#0c878c] text-md xs:text-base sm:text-lg md:text-xl lg:text-2xl">⌄</span>
           </summary>
           <p className="lg:mt-2 mt-1 text-sm xs:text-sm sm:text-sm md:text-sm lg:text-sm text-gray-400">
             At Estatify, we offer access to premium residential solutions with options of monthly, quarterly, and biannual subscription. Once you find a space you like, simply create a booking along with a few details about yourself. This request is then processed within a few hours.
@@ -36,7 +36,7 @@ const Faqs = ({ id }) => {
         <details className="border-b border-gray-700">
           <summary className="cursor-pointer flex justify-between items-center text-md xs:text-md sm:text-md md:text-base lg:text-lg font-medium hover:text-[#0c878c] lg:pb-6 pb-3">
             Does Estatify organize viewings?
-            <span className="text-[#0c878c] text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl">⌄</span>
+            <span className="text-[#0c878c] text-md xs:text-base sm:text-lg md:text-xl lg:text-2xl">⌄</span>
           </summary>
           <p className="lg:mt-2 mt-1 text-sm xs:text-sm sm:text-sm md:text-sm lg:text-sm text-gray-400">
             Yes, we do.

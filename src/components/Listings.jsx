@@ -109,7 +109,7 @@ const Listings = ({ searchCriteria, id }) => {
       <div className="flex flex-col md:flex-col lg:flex-row justify-between items-start lg:max-w-7xl mx-auto mb-10 lg:mb-16 px-2 sm:px-4 md:px-6">
   {/* Left Text */}
   <div className="order-2 lg:order-none text-left w-full lg:w-[150px] xl:w-[150px] lg:mt-10 mt-5">
-    <p className="text-gray-300 w-full xl:w-100 lg:w-130 md:w-100 sm:w-[180px] xs:w-[150px] text-[8px] sm:text-sm md:text-base lg:text-md xl:text-md">
+    <p className="text-gray-300 w-full xl:w-100 lg:w-130 md:w-100 sm:w-[180px] xs:w-[150px] text-sm sm:text-sm md:text-base lg:text-md xl:text-md">
       Estatify-managed apartments are move-in ready. When you subscribe, you enjoy more benefits than you can imagine, from cozy bedrooms to fully equipped kitchens, free high-speed Wi-Fi, modern air conditioning, and secure parking spaces. Plus, access to amenities like swimming pools, gym facilities, private balconies and gardens, 24/7 security, and convenient laundry services, all designed for your comfort and convenience.
     </p>
   </div>
@@ -156,14 +156,14 @@ const Listings = ({ searchCriteria, id }) => {
             {properties.map((item) => (
               <div key={item._id} className="flex-shrink-0 w-full px-2 sm:px-4 md:px-6">
                 <p className="text-[#0c878c] font-semibold lg:mb-4 mb-1 w-full
-                              text-[10px] xs:text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl mt-5">
+                              text-sm xs:text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl mt-5">
                   From ₦{item.price.toLocaleString()} monthly
                 </p>
                 <h3 className="text-white font-bold lg:mb-2 mb-1
-                              text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl">
+                              text-sm xs:text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl">
                   {item.title}
                 </h3>
-                <p className="text-gray-400 text-[6px] xs:text-[8px] sm:text-[10px] md:text-xs lg:text-sm xl:text-sm lg:mb-4 mb-2">
+                <p className="text-gray-400 text-xs xs:text-xs sm:text-xs md:text-xs lg:text-sm xl:text-sm lg:mb-4 mb-2">
                   {item.description}
                 </p>
 
@@ -173,10 +173,10 @@ const Listings = ({ searchCriteria, id }) => {
                       <img
                         src={amenityIcons[amenity] || amenityIcons.default}
                         alt={amenity}
-                        className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 md:w-8 md:h-8"
+                        className="w-5 h-5 xs:w-5 xs:h-5 sm:w-6 sm:h-6 md:w-8 md:h-8"
                       />
                       <div>
-                        <h3 className="text-white font-bold text-[8px] xs:text-[10px] sm:text-xs md:text-sm lg:text-base xl:text-base">
+                        <h3 className="text-white font-bold text-sm xs:text-sm sm:text-sm md:text-sm lg:text-base xl:text-base">
                           {amenity}
                         </h3>
                       </div>
@@ -198,7 +198,7 @@ const Listings = ({ searchCriteria, id }) => {
               key={idx}
               onClick={() => goToSlide(idx)}
               className={`rounded-full transition-all duration-300
-                          w-1 h-1 sm:w-3 sm:h-3 lg:w-3 lg:h-3
+                          w-2 h-2 sm:w-3 sm:h-3 lg:w-3 lg:h-3
                           ${current === idx ? 'bg-[#0c878c] scale-125 shadow-lg' : 'bg-gray-600 hover:bg-[#0a6c70]'}`}
               aria-label={`Go to listing ${idx + 1}`}
               style={{ cursor: 'pointer' }}

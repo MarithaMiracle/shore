@@ -153,20 +153,16 @@ exports.googleAuthCallback = (req, res) => {
     // This is handled by Passport.js. If authentication is successful,
     // Passport adds the user to req.user.
     if (!req.user) {
-        return res.redirect('/auth/error?error=Google authentication failed.');
-
+        // Redirect to frontend error page on the Vercel domain
+        return res.redirect(`${process.env.FRONTEND_URL}/auth/error?error=Google authentication failed.`);
     }
 
     // Generate JWT token for the Google-authenticated user
     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 
-    // Redirect to a frontend page, passing the token (e.g., in query params or local storage post-redirect)
-    // For production, you might set a cookie or redirect to a page that handles token storage securely.
-    // Example: Redirect with token in a way frontend can retrieve it securely (e.g., local storage/cookie set by frontend after parsing URL)
-    res.redirect(`/auth/success?token=${token}&userId=${req.user._id}&userName=${encodeURIComponent(req.user.name)}&userEmail=${encodeURIComponent(req.user.email)}`);
-
+    // Redirect to a frontend page on the Vercel domain, passing the token
+    res.redirect(`<span class="math-inline">\{process\.env\.FRONTEND\_URL\}/auth/success?token\=</span>{token}&userId=<span class="math-inline">\{req\.user\.\_id\}&userName\=</span>{encodeURIComponent(req.user.name)}&userEmail=${encodeURIComponent(req.user.email)}`);
 };
-
 
 // --- POST /auth/request-otp - Request an OTP for various purposes (e.g., password reset, email verification) ---
 exports.requestOtp = async(req, res) => {

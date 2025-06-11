@@ -17,7 +17,7 @@ const Faqs = ({ id }) => {
       </p>
 
       {/* Accordion Section (stretched right with equal margin) */}
-      <div className="lg:mt-10 mt-5 lg:ml-20 lg:mr-20 space-y-4">
+      <div className="lg:mt-10 mt-10 lg:ml-20 lg:mr-20 space-y-4">
         {/* Question 1 */}
         <details className="border-b border-gray-700">
           <summary className="cursor-pointer flex justify-between items-center text-md xs:text-md sm:text-md md:text-base lg:text-lg font-medium hover:text-[#0c878c] lg:pb-6 pb-3">

@@ -97,7 +97,7 @@ const Testimonials = ({ id }) => {
         </div>
 
         {/* Dots slider */}
-        <div className="flex justify-center -mt-30 space-x-3 lg:mt-8">
+        <div className="flex justify-center -mt-10 space-x-3 lg:mt-8">
           {testimonialsData.map((_, idx) => (
             <button
               key={idx}

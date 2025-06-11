@@ -20,8 +20,8 @@ const sendEmail = async(options) => {
         port: process.env.EMAIL_PORT,
         secure: process.env.EMAIL_PORT == 465, // Use 'true' for 465 (SSL), 'false' for others (like 587 STARTTLS)
         auth: {
-            user: process.env.EMAIL_USERNAME,
-            pass: process.env.EMAIL_PASSWORD,
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
         },
         // Optional: for self-signed certificates or development (e.g., with Mailtrap)
         // tls: {

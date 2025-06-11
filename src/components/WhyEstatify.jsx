@@ -8,17 +8,17 @@ const WhyEstatify = ({ id }) => {
       <div className="flex flex-col lg:flex-row justify-between items-start max-w-7xl mx-auto mb-16">
         {/* Left Text */}
         <div className="order-2 lg:order-none lg:text-left sm:max-w-xs lg:max-w-md">
-          <p className="text-xs text-center lg:text-left max-w-full lg:max-w-xl xs:text-sm sm:text-base md:text-lg lg:text-xl lg:mt-10 mt-3 text-gray-300">
+          <p className="text-sm text-center lg:text-left max-w-full lg:max-w-xl xs:text-sm sm:text-base md:text-lg lg:text-xl lg:mt-10 mt-3 text-gray-300">
             We offer you access to premium residential solutions, with as little as possible. Filter by price, location, apartment type, and duration to find your next home.
           </p>
         </div>
 
         {/* Right Text */}
         <div className="text-right self-end max-w-5xl">
-          <h1 className="order-1 lg:order-none text-right -mt-10 lg:text-right font-semibold text-md xs:text-md sm:text-base md:text-lg lg:text-xl text-[#0c878c] leading-tight">
+          <h1 className="order-1 lg:order-none text-right -mt-10 lg:text-right font-semibold text-lg xs:text-lg sm:text-lg md:text-lg lg:text-xl text-[#0c878c] leading-tight">
             WHY ESTATIFY?
           </h1>
-          <p className="text-md xs:text-lg sm:text-xl md:text-2xl lg:text-4xl lg:mt-4 mt-2 text-gray-300">
+          <p className="text-lg xs:text-lg sm:text-xl md:text-2xl lg:text-4xl lg:mt-4 mt-2 text-gray-300">
           Quality apartments <br className='text-left'/>Trusted by millions of renters
           </p>
         </div>

@@ -161,7 +161,7 @@ exports.googleAuthCallback = (req, res) => {
     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 
     // Redirect to a frontend page on the Vercel domain, passing the token
-    res.redirect(`<span class="math-inline">\{process\.env\.FRONTEND\_URL\}/auth/success?token\=</span>{token}&userId=<span class="math-inline">\{req\.user\.\_id\}&userName\=</span>{encodeURIComponent(req.user.name)}&userEmail=${encodeURIComponent(req.user.email)}`);
+    res.redirect(`${process.env.FRONTEND_URL}/auth/success?token=${token}&userId=${req.user._id}&userName=${encodeURIComponent(req.user.name)}&userEmail=${encodeURIComponent(req.user.email)}`);
 };
 
 // --- POST /auth/request-otp - Request an OTP for various purposes (e.g., password reset, email verification) ---

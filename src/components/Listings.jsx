@@ -148,7 +148,7 @@ const Listings = ({ searchCriteria, id }) => {
         </div>
 
         {/* Right - Horizontal Sliding Description */}
-        <div className="flex-1 max-w-3xl overflow-hidden px-2 sm:px-4 md:px-6">
+        <div className="flex-1 lg:max-w-3xl max-w-full overflow-hidden px-2 sm:px-4 md:px-6">
           <div
             className="flex transition-transform duration-1000 ease-in-out"
             style={{ transform: `translateX(-${current * 100}%)` }}

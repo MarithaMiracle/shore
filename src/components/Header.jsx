@@ -29,39 +29,37 @@ const Header = () => {
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        console.log('Decoded token:', decoded); // Should show { id: '...' }
+        console.log('Decoded token:', decoded); 
         setUser({ id: decoded.id }); // Set user based on decoded token ID
         
         if (storedUserName) {
-          const firstPartName = storedUserName.split(' ')[0]; // Get only the first name
+          const firstPartName = storedUserName.split(' ')[0]; 
           setDisplayName(firstPartName); 
           console.log('Display Name set to:', firstPartName);
         } else {
-          // Fallback if userName is not in localStorage (e.g., non-Google login or old data)
           setDisplayName('User'); 
           console.log('Display Name set to "User" (fallback).');
         }
       } catch (err) {
-        console.error('Invalid token in Header:', err); // Log any token decoding errors
+        console.error('Invalid token in Header:', err); 
         setUser(null);
         setDisplayName(null);
       }
     } else {
-      // No token found, so user is not logged in
       setUser(null);
       setDisplayName(null);
       console.log('No token found in localStorage.');
     }
-  }, []); // Empty dependency array means this runs once on component mount
+  }, []); 
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId'); 
     localStorage.removeItem('userName');
-    localStorage.removeItem('userEmail'); // Clear all user-related data
+    localStorage.removeItem('userEmail'); 
     setUser(null);
     setDisplayName(null);
-    window.location.reload(); // Reload to ensure application state is reset
+    window.location.reload(); 
   };
 
   const getSectionId = (itemName) => {
@@ -80,10 +78,10 @@ const Header = () => {
 
       {/* Logo */}
       <img
-  src='/Estatify Colored Transparent.png'
-  alt='Logo'
-  className='lg:h-[70px] lg:w-[150px] h-[60px] w-[60px] mr-30 object-contain'
-/>
+        src='/Estatify Colored Transparent.png'
+        alt='Logo'
+        className='lg:h-[70px] lg:w-[150px] h-[60px] w-[60px] mr-30 object-contain'
+      />
 
       {/* Desktop Navigation */}
       <div className="lg:flex justify-center hidden">
@@ -100,11 +98,13 @@ const Header = () => {
 
       {/* User/Auth & Mobile Menu */}
       <div className='flex items-center justify-end gap-4'>
-        {user ? (
+        {user ? ( // Check if user object is present (meaning logged in)
           <div className="flex items-center lg:gap-3 xl:gap-4">
-            <span className="text-white text-xl hidden lg:block max-w-[100px] truncate">
-              Welcome, {user.name?.split(' ')[0]}
-            </span>
+            {displayName && ( // <-- CHECK THIS LINE: Only show if displayName exists
+                <span className="text-white text-xl hidden lg:block max-w-[100px] truncate">
+                Welcome, {displayName} {/* <-- USE displayName HERE! */}
+              </span>
+            )}
             <button
               onClick={handleLogout}
               className="2xl:flex xl:flex lg:flex hidden items-center justify-center bg-[#0c878c] text-white 2xl:text-[17px] xl:text-sm lg:text-sm font-medium 2xl:px-5 xl:px-4 lg:px-3 2xl:py-3 xl:py-2 lg:py-1 rounded-full cursor-pointer hover:bg-white hover:text-[#0c878c]"
@@ -180,7 +180,10 @@ const Header = () => {
                 </>
               ) : (
                 <>
-                  <span className="grid grid-cols-2 text-white text-xl">Welcome, {user.name?.split(' ')[0]}</span>
+                  {/* USE displayName HERE! */}
+                  {displayName && ( 
+                    <span className="text-white text-xl">Welcome, {displayName}</span>
+                  )}
                   <button
                     onClick={handleLogout}
                     className="flex items-center justify-center bg-[#0c878c] text-white text-sm font-medium px-4 py-1 rounded-full cursor-pointer hover:bg-white hover:text-[#0c878c]"

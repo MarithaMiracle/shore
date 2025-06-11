@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { useNavigate, Link } from 'react-router-dom'; // Import Link for navigation
 
 const ForgotPassword = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -18,11 +18,11 @@ const ForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      // --- CHANGE: Call /auth/request-otp instead of /auth/forgot-password ---
+      // Call /auth/request-otp instead of /auth/forgot-password
       const res = await fetch(`${API_BASE_URL}/auth/request-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        // --- IMPORTANT: Specify the purpose as 'password_reset' ---
+        // IMPORTANT: Specify the purpose as 'password_reset'
         body: JSON.stringify({ email, purpose: 'password_reset' }), 
       });
 
@@ -30,7 +30,7 @@ const ForgotPassword = () => {
 
       if (res.ok) {
         setMessage(data.message || 'OTP sent! Please check your email to reset your password.');
-        // --- NEW: Redirect to the OTP reset page, passing the email via state ---
+        // NEW: Redirect to the OTP reset page, passing the email via state
         navigate('/reset-password-otp', { state: { email: email } });
       } else {
         setErrorMessage(data.message || 'Failed to send OTP. Please try again.');
@@ -61,21 +61,21 @@ const ForgotPassword = () => {
         }}
       />
 
-      {/* Logo */}
-      <div className="fixed lg:top-60 sm:top-75 xs:top-75 top-80 z-20 flex justify-center w-full">
-        <img
-          src="/Estatify Colored Transparent.png"
-          alt="Estatify Logo"
-          className="w-[80px] h-[32px] lg:w-[140px] lg:h-[60px]"
-        />
-      </div>
-
       {/* Form container */}
       <div
         className="relative z-10 bg-black/90 backdrop-blur-xl rounded-lg w-full max-w-xs p-4 pt-16 mt-12 shadow-xl space-y-3
           lg:max-w-md lg:p-8 lg:pt-24 lg:space-y-6"
         style={{ border: '1px solid rgba(12, 135, 140, 0.2)' }}
       >
+        {/* LOGO MOVED HERE, INSIDE THE FORM CONTAINER, with adjusted margins */}
+        <div className="flex justify-center w-full mb-8 lg:mb-10 -mt-10 lg:-mt-20">
+          <img
+            src="/Estatify Colored Transparent.png"
+            alt="Estatify Logo"
+            className="w-[80px] h-[32px] lg:w-[140px] lg:h-[60px]"
+          />
+        </div>
+
         <h2 className="text-center text-base lg:text-2xl font-semibold">Forgot Password?</h2>
 
         {message && (
@@ -109,9 +109,9 @@ const ForgotPassword = () => {
 
         <p className="text-center text-xs lg:text-sm text-gray-400">
           Remembered your password?{' '}
-          <a href="/login" className="hover:underline" style={{ color: '#0c878c' }}>
+          <Link to="/login" className="hover:underline" style={{ color: '#0c878c' }}>
             Sign In
-          </a>
+          </Link>
         </p>
       </div>
     </div>

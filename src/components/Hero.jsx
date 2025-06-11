@@ -115,8 +115,8 @@ const Hero = ({ id, onSearch }) => {
       >
         {/* Location */}
         <div className="flex-2 border-r border-gray-600 sm:pr-4">
-          <h3 className="text-[10px] sm:text-xs text-gray-300 font-bold mb-1">LOCATION</h3>
-          <p className="text-[8px] sm:text-[10px] lg:text-xs text-gray-400">Where would you love to stay?</p>
+          <h3 className="text-[8px] sm:text-xs text-gray-300 font-bold mb-1">LOCATION</h3>
+          <p className="text-[6px] sm:text-[10px] lg:text-xs text-gray-400">Where would you love to stay?</p>
           {/* You could add an input here:
           <input
             type="text"
@@ -130,9 +130,9 @@ const Hero = ({ id, onSearch }) => {
 
         {/* Price Dropdown */}
         <div className="flex-1 relative border-r border-gray-600 pr-2 sm:pr-4">
-          <h3 className="text-[10px] sm:text-xs text-gray-300 font-bold mb-1">PRICE</h3>
+          <h3 className="text-[8px] sm:text-xs text-gray-300 font-bold mb-1">PRICE</h3>
           <div
-            className="flex items-center text-[8px] sm:text-[10px] lg:text-xs text-gray-400 cursor-pointer whitespace-nowrap"
+            className="flex items-center text-[6px] sm:text-[10px] lg:text-xs text-gray-400 cursor-pointer whitespace-nowrap"
             onClick={() => setShowPriceOptions(!showPriceOptions)}
           >
             <span>{minPrice || maxPrice ? `₦${minPrice} - ₦${maxPrice}` : 'Choose a price range'}</span>
@@ -181,9 +181,9 @@ const Hero = ({ id, onSearch }) => {
 
         {/* Duration Dropdown */}
         <div className="flex-1 relative">
-          <h3 className="text-[10px] sm:text-xs text-gray-300 font-bold mb-1">DURATION</h3>
+          <h3 className="text-[8px] sm:text-xs text-gray-300 font-bold mb-1">DURATION</h3>
           <div
-            className="flex items-center text-[8px] sm:text-[10px] lg:text-xs text-gray-400 cursor-pointer whitespace-nowrap"
+            className="flex items-center text-[6px] sm:text-[10px] lg:text-xs text-gray-400 cursor-pointer whitespace-nowrap"
             onClick={() => setShowDurationOptions(!showDurationOptions)}
           >
             <span>{selectedDurations.length > 0 ? selectedDurations.join(', ') : 'Select duration'}</span>
@@ -230,7 +230,7 @@ const Hero = ({ id, onSearch }) => {
         <div className="flex-none">
           <button
             onClick={handleFindHome}
-            className="w-full sm:w-auto px-2 sm:px-4 py-2 bg-[rgb(12,135,140)] hover:bg-white hover:text-[#0c878c] text-white rounded-md lg:rounded-full text-[8px] sm:text-xs lg:text-sm font-semibold hover:scale-105 transition whitespace-nowrap cursor-pointer"
+            className="w-full sm:w-auto px-2 sm:px-4 py-2 bg-[rgb(12,135,140)] hover:bg-white hover:text-[#0c878c] text-white rounded-md lg:rounded-full text-[6px] sm:text-xs lg:text-sm font-semibold hover:scale-105 transition whitespace-nowrap cursor-pointer"
           >
             Find a home
           </button>

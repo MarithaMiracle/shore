@@ -4,10 +4,10 @@ const OurProducts = ({ id }) => {
   return (
     <section id={id} className="bg-black py-10 px-6 mt-10">
       <div className="max-w-[1200px] mx-auto">
-        <h1 className="font-semibold text-sm sm:text-base md:text-lg lg:text-xl text-[#0c878c] leading-tight mb-6">
+        <h1 className="font-semibold text-md sm:text-base md:text-lg lg:text-xl text-[#0c878c] leading-tight mb-6">
           OUR PRODUCTS
         </h1>
-        <p className="text-sm sm:text-base md:text-xl lg:text-3xl text-gray-300">
+        <p className="text-md sm:text-base md:text-xl lg:text-3xl text-gray-300">
           Are you looking to rent or lease an apartment? <br />
           We’ve got you covered
         </p>
@@ -23,15 +23,15 @@ const OurProducts = ({ id }) => {
               />
             </div>
             <div className="p-4 text-white flex flex-col justify-between flex-grow">
-              <h3 className="text-base sm:text-lg lg:text-2xl font-semibold mb-4 flex items-center gap-2">
+              <h3 className="text-lg sm:text-lg lg:text-2xl font-semibold mb-4 flex items-center gap-2">
                 <img
                   src="/marketplace.svg"
                   alt="Store Icon"
-                  className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8"
+                  className="w-6 h-6 sm:w-6 sm:h-6 lg:w-8 lg:h-8"
                 />
                 Marketplace
               </h3>
-              <p className="text-xs sm:text-sm md:text-base">
+              <p className="text-sm sm:text-sm md:text-base">
                 Find an apartment in Nigeria and pay monthly, quarterly or annually. No inspection, agency or legal fees required. Browse from our carefully curated listings, choose a space, pay and move in.
               </p>
             </div>
@@ -47,15 +47,15 @@ const OurProducts = ({ id }) => {
               />
             </div>
             <div className="p-4 text-white flex flex-col justify-between flex-grow">
-              <h3 className="text-base sm:text-lg lg:text-2xl font-semibold mb-4 flex items-center gap-2">
+              <h3 className="text-lg sm:text-lg lg:text-2xl font-semibold mb-4 flex items-center gap-2">
                 <img
                   src="/pay later.svg"
                   alt="Pay Later Icon"
-                  className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8"
+                  className="w-6 h-6 sm:w-6 sm:h-6 lg:w-8 lg:h-8"
                 />
                 Rent Now, Pay Later
               </h3>
-              <p className="text-xs sm:text-sm md:text-base">
+              <p className="text-sm sm:text-sm md:text-base">
                 Estatify’s Rent Now Pay Later gives you access to low interest, no collateral loans up to N3,000,000 to finance rent payments.
               </p>
             </div>

@@ -1,3 +1,4 @@
+// backend/routes/authRoutes.js
 const express = require('express');
 const passport = require('passport'); // Still needed for Google Auth middleware
 const authController = require('../controllers/authController'); // Import your authController
@@ -5,12 +6,17 @@ const authController = require('../controllers/authController'); // Import your 
 const router = express.Router();
 
 // --- POST /auth/register - Register a new user with email/password ---
-// This route now simply calls the register function from the authController
 router.post('/register', authController.register);
 
 // --- POST /auth/login - Email/password login ---
-// This route now simply calls the login function from the authController
 router.post('/login', authController.login);
+
+// --- NEW: OTP Routes ---
+// POST /auth/request-otp - Request an OTP for a given email and purpose
+router.post('/request-otp', authController.requestOtp); // <--- ADD THIS LINE
+
+// POST /auth/verify-otp - Verify an OTP for a given email and purpose
+router.post('/verify-otp', authController.verifyOtp); // <--- ADD THIS LINE
 
 // --- Google Auth Routes ---
 // Initiates the Google authentication process

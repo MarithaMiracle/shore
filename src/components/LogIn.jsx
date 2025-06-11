@@ -40,14 +40,12 @@ const Login = () => {
 
       const { token, user } = data;
       localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user)); // Keep storing the full user object
+      localStorage.setItem('user', JSON.stringify(user));
 
-      // --- ADD THIS LINE ---
       // Store the user's name separately for consistent Header display
       if (user && user.name) {
         localStorage.setItem('userName', user.name); 
       }
-      // --- END ADDITION ---
 
       navigate('/');
     } catch (error) {
@@ -76,21 +74,21 @@ const Login = () => {
         }}
       />
 
-      {/* Logo */}
-      <div className="fixed lg:top-30 sm:top-55 xs:top-55 top-60 z-20 flex justify-center w-full">
-        <img
-          src="/Estatify Colored Transparent.png"
-          alt="Estatify Logo"
-          className="w-[80px] h-[32px] lg:w-[140px] lg:h-[60px]"
-        />
-      </div>
-
       {/* Form container */}
       <div
         className="relative z-10 bg-black/90 backdrop-blur-xl rounded-lg w-full max-w-xs p-4 pt-16 mt-12 shadow-xl space-y-3
           lg:max-w-md lg:p-8 lg:pt-24 lg:space-y-6"
         style={{ border: '1px solid rgba(12, 135, 140, 0.2)' }}
       >
+        {/* LOGO MOVED HERE, INSIDE THE FORM CONTAINER, with adjusted margins */}
+        <div className="flex justify-center w-full mb-8 lg:mb-10 -mt-10 lg:-mt-20">
+          <img
+            src="/Estatify Colored Transparent.png"
+            alt="Estatify Logo"
+            className="w-[80px] h-[32px] lg:w-[140px] lg:h-[60px]"
+          />
+        </div>
+
         <h2 className="text-center text-base lg:text-2xl font-semibold">Welcome Back</h2>
 
         {errorMsg && (

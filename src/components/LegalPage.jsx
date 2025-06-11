@@ -41,7 +41,7 @@ const LegalPage = () => {
         <Header />
 
         {/* Main Content Area for Combined Legal Information */}
-        <section className="lg:max-w-6xl md:max-w-4xl sm:max-w-2xl xs:max-w-lg max-w-xs mx-auto py-20 px-6 sm:px-8 lg:px-10 text-gray-300">
+        <section className="lg:max-w-6xl md:max-w-4xl sm:max-w-2xl xs:max-w-lg max-w-full mx-auto py-20 px-6 sm:px-8 lg:px-10 text-gray-300">
 
           {/* Terms of Service Section */}
           <h1 className="text-xl xs:text-xl sm:text-2xl md:text-2xl lg:text-4xl font-semibold text-[#0c878c] mt-10 lg:mt-20 lg:mb-8 mb-4 text-center">Terms of Service</h1>

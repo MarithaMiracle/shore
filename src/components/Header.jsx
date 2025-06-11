@@ -180,7 +180,7 @@ const Header = () => {
                 </>
               ) : (
                 <>
-                  <span className="text-white text-xl">Welcome, {user.name?.split(' ')[0]}</span>
+                  <span className="grid grid-cols-2 text-white text-xl">Welcome, {user.name?.split(' ')[0]}</span>
                   <button
                     onClick={handleLogout}
                     className="flex items-center justify-center bg-[#0c878c] text-white text-sm font-medium px-4 py-1 rounded-full cursor-pointer hover:bg-white hover:text-[#0c878c]"

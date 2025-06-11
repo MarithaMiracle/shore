@@ -26,11 +26,15 @@ const CreateAccount = () => {
 
       if (res.ok && data.token) {
         localStorage.setItem('token', data.token);
+        // Note: For consistent display name in Header, you might want to also store
+        // data.user.name (and id/email) in localStorage here, similar to Login.jsx.
+        // I'm keeping it as you provided for this specific request.
         navigate('/');
       } else {
         setErrorMessage(data.message || 'Registration failed.');
       }
     } catch (err) {
+      console.error('Registration error:', err); // Added for better debugging
       setErrorMessage('Network error. Try again.');
     } finally {
       setIsLoading(false);
@@ -55,21 +59,21 @@ const CreateAccount = () => {
         }}
       />
 
-      {/* Logo */}
-      <div className="fixed lg:top-30 sm:top-55 xs:top-55 top-60 z-20 flex justify-center w-full">
-        <img
-          src="/Estatify Colored Transparent.png"
-          alt="Estatify Logo"
-          className="w-[80px] h-[32px] lg:w-[140px] lg:h-[60px]"
-        />
-      </div>
-
       {/* Form container */}
       <div
         className="relative z-10 bg-black/90 backdrop-blur-xl rounded-lg w-full max-w-xs p-4 pt-16 mt-12 shadow-xl space-y-3
           lg:max-w-md lg:p-8 lg:pt-24 lg:space-y-6"
         style={{ border: '1px solid rgba(12, 135, 140, 0.2)' }}
       >
+        {/* LOGO MOVED HERE, INSIDE THE FORM CONTAINER, with adjusted margins */}
+        <div className="flex justify-center w-full mb-8 lg:mb-10 -mt-10 lg:-mt-20">
+          <img
+            src="/Estatify Colored Transparent.png"
+            alt="Estatify Logo"
+            className="w-[80px] h-[32px] lg:w-[140px] lg:h-[60px]"
+          />
+        </div>
+
         <h2 className="text-center text-base lg:text-2xl font-semibold">Create an Account</h2>
 
         {errorMessage && (

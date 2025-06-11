@@ -132,7 +132,7 @@ const Listings = ({ searchCriteria, id }) => {
 
         {/* Left - Carousel Images */}
         <div className="flex-1 relative
-                        w-[280px] sm:w-[320px] md:w-[360px] lg:w-[400px] xl:w-[400px]
+                        w-[300px] sm:w-[320px] md:w-[360px] lg:w-[400px] xl:w-[400px]
                         h-[200px] sm:h-[220px] md:h-[250px] lg:h-[280px] xl:h-[280px]
                         overflow-hidden rounded-lg shadow-lg">
           {properties.map((item, index) => (

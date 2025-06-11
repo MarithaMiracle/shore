@@ -30,7 +30,7 @@ const ResetPasswordWithOtp = () => {
   // Handler for individual OTP input changes
   const handleOtpChange = (e, index) => {
     const { value } = e.target;
-    if (value.length > 1) return; // Prevent pasting more than one digit
+    if (value.length > 1) return;
 
     const newOtpDigits = [...otpDigits];
     newOtpDigits[index] = value;
@@ -165,7 +165,7 @@ const ResetPasswordWithOtp = () => {
                 onKeyDown={(e) => handleOtpKeyDown(e, index)}
                 ref={(el) => (inputRefs.current[index] = el)} // Store ref to each input
                 className="w-10 h-10 lg:w-12 lg:h-12 text-center text-xl lg:text-2xl font-bold bg-transparent border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none"
-                style={{ caretColor: '#0c878c', borderColor: digit ? '#0c878c' : 'rgb(75 85 99)' }} // Highlight active/filled boxes
+                style={{ caretColor: '#0c878c', borderColor: digit ? '#0c878c' : 'rgb(75 85 99)' }}
                 onFocus={(e) => (e.target.style.borderColor = '#0c878c')}
                 onBlur={(e) => (e.target.style.borderColor = digit ? '#0c878c' : 'rgb(75 85 99)')}
                 disabled={isLoading}

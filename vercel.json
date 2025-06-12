@@ -1,27 +1,48 @@
 {
-    "routes": [{
-            "src": "/static/(.*)",
-            "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
-        },
-        {
-            "src": "/assets/(.*)",
-            "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
-        },
-        {
-            "src": "/favicon.ico",
-            "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
-        },
-        {
-            "src": "/(.*\\.[^/]+)$",
-            "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/index.html"
-        },
-        {
-            "src": "/404.html",
-            "status": 404
+    "build": {
+        "env": {
+            "NODE_OPTIONS": "--max_old_space_size=4096"
         }
-    ]
+    },
+    "headers": [{
+        "source": "/(.*)",
+        "headers": [{
+                "key": "Strict-Transport-Security",
+                "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+                "key": "X-Content-Type-Options",
+                "value": "nosniff"
+            },
+            {
+                "key": "X-Frame-Options",
+                "value": "DENY"
+            },
+            {
+                "key": "Referrer-Policy",
+                "value": "no-referrer"
+            }
+        ]
+    }],
+    "rewrites": [{
+            "source": "/static/(.*)",
+            "destination": "/static/$1"
+        },
+        {
+            "source": "/assets/(.*)",
+            "destination": "/assets/$1"
+        },
+        {
+            "source": "/(.*\\.[^/]+)",
+            "destination": "/$1"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
+        }
+    ],
+    "routes": [{
+        "src": "/404.html",
+        "status": 404
+    }]
 }

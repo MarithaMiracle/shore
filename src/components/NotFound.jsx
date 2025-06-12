@@ -52,7 +52,10 @@ const NotFound = () => {
           className={`text-base md:text-xl max-w-[80%] leading-relaxed mb-8 ${
             imageError ? 'text-[#a0aec0]' : 'text-[#718096]'
           }`}
-          style={{ fontFamily: "'Inter', sans-serif" }}
+          style={{
+            fontFamily: "'Fuzzy Bubbles', cursive",
+            textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
+          }}
         >
           STAY WHERE YOU ARE AND WE'LL SEND SOMEONE TO FIND YOU!
         </p>
@@ -64,7 +67,10 @@ const NotFound = () => {
               ? 'bg-[#0c878c] hover:bg-white hover:text-[#0c878c] hover:border-[#0c878c]'
               : 'bg-[#0c878c] hover:bg-white hover:text-[#0c878c] hover:border-[#0c878c]'
           } hover:translate-y-[-3px] hover:scale-105 hover:shadow-xl active:scale-95`}
-          style={{ fontFamily: "'Inter', sans-serif" }}
+          style={{
+            fontFamily: "'Fuzzy Bubbles', cursive",
+            textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
+          }}
         >
           RETURN TO MAINLAND
         </Link>

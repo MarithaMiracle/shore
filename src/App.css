@@ -49,3 +49,7 @@
     font-weight: bold;
     font-style: normal;
 }
+
+.fuzzy-text {
+    font-family: 'Fuzzy Bubbles', cursive;
+}

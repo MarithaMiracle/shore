@@ -30,7 +30,7 @@ const NotFound = () => {
         <img
           src="/23722103_7yu8_f6h4_211228.svg"
           alt="Lost SVG"
-          className="w-full max-w-[100%] object-contain"
+          className="w-[700px] max-w-[100%] object-contain"
           style={{
             pointerEvents: 'none',
             position: 'absolute',
@@ -70,8 +70,8 @@ const NotFound = () => {
           to="/"
           className={`inline-block px-6 py-2 text-white text-base font-semibold rounded-lg transition-all duration-300 ease-in-out shadow-md border-2 border-transparent ${
             imageError
-              ? 'hover:bg-white hover:text-[#0c878c] hover:border-[#0c878c] border-white'
-              : 'hover:bg-white hover:text-[#0c878c] hover:border-[#0c878c] border-white'
+              ? 'hover:bg-white hover:text-black hover:border-black border-white'
+              : 'hover:bg-white hover:text-black hover:border-black border-white'
           } hover:-translate-y-1 hover:scale-105 hover:shadow-xl active:scale-95`}
           style={{
             fontFamily: "'Fuzzy Bubbles', cursive",

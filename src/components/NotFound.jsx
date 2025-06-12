@@ -30,7 +30,7 @@ const NotFound = () => {
         <img
           src="/23722103_7yu8_f6h4_211228.svg"
           alt="Lost SVG"
-          className="w-[180px] max-w-[40%] object-contain"
+          className="w-[400px] max-w-[100%] object-contain"
           style={{
             pointerEvents: 'none',
             position: 'absolute',
@@ -41,7 +41,7 @@ const NotFound = () => {
         />
       )}
 
-      <div className="ml-auto text-right max-w-[480px] space-y-4 z-20">
+      <div className="ml-auto text-right max-w-[500px] space-y-4 z-20">
         <h1
           className={`font-bold text-3xl md:text-4xl ${
             imageError ? 'text-[#0c878c]' : 'text-[#e0f7ff]'
@@ -68,10 +68,10 @@ const NotFound = () => {
 
         <Link
           to="/"
-          className={`inline-block px-6 py-2 text-white text-base font-semibold rounded-full transition-all duration-300 ease-in-out shadow-md border-2 border-transparent ${
+          className={`inline-block px-6 py-2 text-white text-base font-semibold rounded-b-lg transition-all duration-300 ease-in-out shadow-md border-2 border-transparent ${
             imageError
-              ? 'bg-[#0c878c] hover:bg-white hover:text-[#0c878c] hover:border-[#0c878c]'
-              : 'bg-[#0c878c] hover:bg-white hover:text-[#0c878c] hover:border-[#0c878c]'
+              ? 'hover:bg-white hover:text-[#0c878c] hover:border-[#0c878c] border-white'
+              : 'hover:bg-white hover:text-[#0c878c] hover:border-[#0c878c] border-white'
           } hover:-translate-y-1 hover:scale-105 hover:shadow-xl active:scale-95`}
           style={{
             fontFamily: "'Fuzzy Bubbles', cursive",

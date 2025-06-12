@@ -68,7 +68,7 @@ const NotFound = () => {
 
         <Link
           to="/"
-          className={`inline-block px-6 py-2 text-green-600 text-base font-semibold rounded-lg transition-all duration-300 ease-in-out shadow-md border-2 border-transparent ${
+          className={`inline-block px-6 py-2 text-green-600 text-base font-semibold rounded-lg transition-all duration-300 ease-in-out shadow-md border-2 border-green-600 ${
             imageError
               ? 'hover:text-white hover:border-white border-green-600'
               : 'hover:text-white hover:border-white border-green-600'

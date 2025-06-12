@@ -21,7 +21,7 @@ const NotFound = () => {
 
   return (
     <div
-      className="w-screen h-screen flex items-center justify-between bg-[#0a617e] px-6 md:px-20"
+      className="w-screen h-screen flex items-center justify-between bg-[#053444] px-6 md:px-20"
       style={{
         fontFamily: "'Inter', sans-serif",
       }}
@@ -30,7 +30,7 @@ const NotFound = () => {
         <img
           src="/23722103_7yu8_f6h4_211228.svg"
           alt="Lost SVG"
-          className="w-[400px] max-w-[100%] object-contain"
+          className="w-full max-w-[100%] object-contain"
           style={{
             pointerEvents: 'none',
             position: 'absolute',
@@ -41,7 +41,7 @@ const NotFound = () => {
         />
       )}
 
-      <div className="ml-auto text-right max-w-[500px] space-y-4 z-20">
+      <div className="ml-auto text-right max-w-[600px] space-y-4 z-20">
         <h1
           className={`font-bold text-3xl md:text-4xl ${
             imageError ? 'text-[#0c878c]' : 'text-[#e0f7ff]'
@@ -68,7 +68,7 @@ const NotFound = () => {
 
         <Link
           to="/"
-          className={`inline-block px-6 py-2 text-white text-base font-semibold rounded-b-lg transition-all duration-300 ease-in-out shadow-md border-2 border-transparent ${
+          className={`inline-block px-6 py-2 text-white text-base font-semibold rounded-lg transition-all duration-300 ease-in-out shadow-md border-2 border-transparent ${
             imageError
               ? 'hover:bg-white hover:text-[#0c878c] hover:border-[#0c878c] border-white'
               : 'hover:bg-white hover:text-[#0c878c] hover:border-[#0c878c] border-white'

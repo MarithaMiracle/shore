@@ -21,24 +21,30 @@ const NotFound = () => {
 
   return (
     <div
-      className={`w-screen h-screen flex items-center justify-center ${
-        imageError ? 'bg-[#1a202c]' : ''
-      }`}
+      className="w-screen h-screen flex items-center justify-between bg-[#0a617e] px-6 md:px-20"
       style={{
-        backgroundImage: imageError
-          ? 'none'
-          : "url('/23722103_7yu8_f6h4_211228.svg')",
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        backgroundColor: imageError ? '#1a202c' : '#ADD8E6',
         fontFamily: "'Inter', sans-serif",
       }}
     >
-      <div className="z-20 flex flex-col items-center justify-center text-center px-4 mt-[-15vh]">
+      {!imageError && (
+        <img
+          src="/23722103_7yu8_f6h4_211228.svg"
+          alt="Lost SVG"
+          className="w-[180px] max-w-[40%] object-contain"
+          style={{
+            pointerEvents: 'none',
+            position: 'absolute',
+            left: '20px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+          }}
+        />
+      )}
+
+      <div className="ml-auto text-right max-w-[480px] space-y-4 z-20">
         <h1
-          className={`font-bold mb-2 text-4xl md:text-6xl lg:text-7xl ${
-            imageError ? 'text-[#0c878c]' : 'text-[#4a5568]'
+          className={`font-bold text-3xl md:text-4xl ${
+            imageError ? 'text-[#0c878c]' : 'text-[#e0f7ff]'
           }`}
           style={{
             fontFamily: "'Fuzzy Bubbles', cursive",
@@ -49,8 +55,8 @@ const NotFound = () => {
         </h1>
 
         <p
-          className={`text-base md:text-xl max-w-[80%] leading-relaxed mb-8 ${
-            imageError ? 'text-[#a0aec0]' : 'text-[#718096]'
+          className={`text-sm md:text-base leading-relaxed ${
+            imageError ? 'text-[#a0aec0]' : 'text-[#d4eefb]'
           }`}
           style={{
             fontFamily: "'Fuzzy Bubbles', cursive",
@@ -62,11 +68,11 @@ const NotFound = () => {
 
         <Link
           to="/"
-          className={`px-8 py-3 text-white text-lg font-semibold rounded-full transition-all duration-300 ease-in-out shadow-md border-2 border-transparent ${
+          className={`inline-block px-6 py-2 text-white text-base font-semibold rounded-full transition-all duration-300 ease-in-out shadow-md border-2 border-transparent ${
             imageError
               ? 'bg-[#0c878c] hover:bg-white hover:text-[#0c878c] hover:border-[#0c878c]'
               : 'bg-[#0c878c] hover:bg-white hover:text-[#0c878c] hover:border-[#0c878c]'
-          } hover:translate-y-[-3px] hover:scale-105 hover:shadow-xl active:scale-95`}
+          } hover:-translate-y-1 hover:scale-105 hover:shadow-xl active:scale-95`}
           style={{
             fontFamily: "'Fuzzy Bubbles', cursive",
             textShadow: '1px 1px 2px rgba(0,0,0,0.1)',

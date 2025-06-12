@@ -70,15 +70,15 @@ const NotFound = () => {
           to="/"
           className={`inline-block px-6 py-2 text-white text-base font-semibold rounded-lg transition-all duration-300 ease-in-out shadow-md border-2 border-transparent ${
             imageError
-              ? 'hover:bg-white hover:text-black hover:border-black border-white'
-              : 'hover:bg-white hover:text-black hover:border-black border-white'
+              ? 'hover:text-green-600 hover:border-green-600 border-white'
+              : 'hover:text-green-600 hover:border-green-600 border-white'
           } hover:-translate-y-1 hover:scale-105 hover:shadow-xl active:scale-95`}
           style={{
             fontFamily: "'Fuzzy Bubbles', cursive",
             textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
           }}
         >
-          RETURN TO MAINLAND
+          OR RETURN TO THE ESTATE
         </Link>
       </div>
     </div>

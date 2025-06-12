@@ -1,10 +1,21 @@
 {
-    "rewrites": [{
-        "source": "/(.*)",
-        "destination": "/index.html"
-    }],
     "routes": [{
-        "src": "/404.html",
-        "status": 404
-    }]
+            "src": "/404.html",
+            "status": 404
+        },
+        {
+            "src": "/static/(.*)",
+            "headers": { "Cache-Control": "public, max-age=31536000, immutable" },
+            "continue": true
+        },
+        {
+            "src": "/favicon.ico",
+            "dest": "/favicon.ico",
+            "continue": true
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/index.html"
+        }
+    ]
 }

@@ -4,14 +4,13 @@ import Home from './Home';
 import CreateAccount from './components/CreateAccount';
 import Login from './components/LogIn';
 import ForgotPassword from './components/ForgotPassword';
-import ResetPassword from './components/ResetPassword'; // This is likely for link-based reset
+import ResetPassword from './components/ResetPassword';
 import SetPassword from './components/SetPassword';
 import GoogleAuthSuccess from './components/GoogleAuthSuccess';
 import GoogleAuthError from './components/GoogleAuthError';
 import LegalPage from './components/LegalPage';
-
-// --- NEW IMPORT: For your OTP-based password reset page ---
-import ResetPasswordWithOtp from './components/ResetPasswordWithOtp'; // Assuming it's in components folder
+import ResetPasswordWithOtp from './components/ResetPasswordWithOtp';
+import NotFound from './components/NotFound'; // ⬅️ Import the 404 page component
 
 const App = () => {
   return (
@@ -21,21 +20,20 @@ const App = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
 
-      {/* Routes for Password Reset/Set */}
-      {/* This is your existing link-based reset route */}
-      <Route path="/reset-password/:token" element={<ResetPassword />} /> 
-      {/* This is your existing set password for Google users */}
+      {/* Password reset/set routes */}
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
       <Route path="/set-password/:token" element={<SetPassword />} />
+      <Route path="/reset-password-otp" element={<ResetPasswordWithOtp />} />
 
-      {/* --- NEW ROUTE FOR OTP-BASED RESET --- */}
-      <Route path="/reset-password-otp" element={<ResetPasswordWithOtp />} /> 
-
-      {/* Routes for Google Authentication Callbacks */}
+      {/* Google auth callback routes */}
       <Route path="/auth/success" element={<GoogleAuthSuccess />} />
       <Route path="/auth/error" element={<GoogleAuthError />} />
 
-      {/* Route for the Legal Page */}
+      {/* Legal page */}
       <Route path="/legal" element={<LegalPage />} />
+
+      {/* ✅ Catch-all route for 404 */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom'; // <--- Import useLocation
+import { useLocation } from 'react-router-dom';
 import {
   Footer,
   Header,
@@ -16,7 +16,7 @@ import {
 
 const Home = () => {
   const [searchCriteria, setSearchCriteria] = useState({});
-  const location = useLocation(); // <--- Get the location object
+  const location = useLocation();
 
   const handleSearch = (criteria) => {
     setSearchCriteria(criteria);
@@ -24,10 +24,25 @@ const Home = () => {
 
     const listingsSection = document.getElementById('listings-section');
     if (listingsSection) {
-      listingsSection.scrollIntoView({ behavior: 'smooth' }); // Smooth scroll for better UX
+      listingsSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
+  // Tawk.to Script Injection
+  useEffect(() => {
+    const tawkScript = document.createElement('script');
+    tawkScript.src = 'https://embed.tawk.to/684cfa3c47f3b9190ba0016a/1itmb2vs1';
+    tawkScript.async = true;
+    tawkScript.charset = 'UTF-8';
+    tawkScript.setAttribute('crossorigin', '*');
+    document.body.appendChild(tawkScript);
+
+    return () => {
+      document.body.removeChild(tawkScript);
+    };
+  }, []);
+
+  // Token capture from URL
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
@@ -38,20 +53,18 @@ const Home = () => {
     }
   }, []);
 
-  // NEW useEffect for hash scrolling on Home page
+  // Smooth scroll to hash element
   useEffect(() => {
     if (location.hash) {
-      const elementId = location.hash.substring(1); // Remove the '#'
-      // console.log(`Attempting to scroll to ID: ${elementId}`); // Debugging line
+      const elementId = location.hash.substring(1);
       const targetElement = document.getElementById(elementId);
       if (targetElement) {
-        // console.log('Target element found, scrolling...'); // Debugging line
-        setTimeout(() => { // Small delay to ensure element is fully rendered
+        setTimeout(() => {
           targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
       }
     }
-  }, [location.hash]); // <--- Rerun effect when hash changes
+  }, [location.hash]);
 
   return (
     <div style={{ fontFamily: 'Britannic Bold' }} className="relative min-h-screen overflow-x-hidden bg-black text-white">
@@ -69,14 +82,13 @@ const Home = () => {
       <div className="relative z-10">
         <Header />
         <Hero id="hero-section" onSearch={handleSearch} />
-        {/* --- ENSURE THESE COMPONENTS HAVE THE CORRECT IDs --- */}
-        <DesignedForLiving id="features-section" /> {/* Confirmed ID */}
-        <OurProducts id="our-products-section" />   {/* Confirmed ID */}
+        <DesignedForLiving id="features-section" />
+        <OurProducts id="our-products-section" />
         <SecondImage />
-        <WhyEstatify id="why-estatify-main" />     {/* Confirmed ID */}
-        <Testimonials id="testimonials-section" /> {/* Confirmed ID */}
-        <Listings id="listings-section" searchCriteria={searchCriteria} /> {/* Confirmed ID */}
-        <Faqs id="faqs-section" />                 {/* Confirmed ID */}
+        <WhyEstatify id="why-estatify-main" />
+        <Testimonials id="testimonials-section" />
+        <Listings id="listings-section" searchCriteria={searchCriteria} />
+        <Faqs id="faqs-section" />
         <ThirdImage />
         <Footer />
       </div>

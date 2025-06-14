@@ -10,7 +10,7 @@ import GoogleAuthSuccess from './components/GoogleAuthSuccess';
 import GoogleAuthError from './components/GoogleAuthError';
 import LegalPage from './components/LegalPage';
 import ResetPasswordWithOtp from './components/ResetPasswordWithOtp';
-import NotFound from './components/NotFound'; // ⬅️ Import the 404 page component
+import NotFound from './components/NotFound';
 
 const App = () => {
   return (

@@ -21,7 +21,7 @@ const NotFound = () => {
 
   return (
     <div
-      className="w-screen h-screen flex flex-col lg:flex-row items-center justify-center bg-[#053444] px-4 sm:px-6 md:px-12 lg:px-20 text-white"
+      className="w-screen h-screen flex flex-col items-center justify-center bg-[#053444] px-4 sm:px-6 md:px-12 lg:px-20 text-white"
       style={{
         fontFamily: "'Inter', sans-serif",
       }}

@@ -30,14 +30,14 @@ const NotFound = () => {
         <img
           src="/23722103_7yu8_f6h4_211228.svg"
           alt="Lost SVG"
-          className="w-[clamp(200px,40vw,700px)] max-w-full object-contain mb-6 lg:mb-0 lg:mr-8"
+          className="w-[clamp(200px,40vw,700px)] max-w-full object-contain mb-6"
           style={{
             pointerEvents: 'none',
           }}
         />
       )}
 
-      <div className="text-center lg:text-right max-w-[90%] sm:max-w-[85%] md:max-w-[600px] space-y-4 z-20">
+      <div className="text-center max-w-[90%] sm:max-w-[85%] md:max-w-[600px] space-y-4 z-20">
         <h1
           className={`font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl ${
             imageError ? 'text-[#0c878c]' : 'text-[#e0f7ff]'

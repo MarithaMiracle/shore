@@ -21,7 +21,7 @@ const NotFound = () => {
 
   return (
     <div
-      className="w-screen h-screen flex items-center justify-between bg-[#053444] px-6 md:px-20"
+      className="w-screen h-screen flex items-center justify-between bg-[#053444] px-4 sm:px-6 md:px-12 lg:px-20 relative"
       style={{
         fontFamily: "'Inter', sans-serif",
       }}
@@ -30,20 +30,17 @@ const NotFound = () => {
         <img
           src="/23722103_7yu8_f6h4_211228.svg"
           alt="Lost SVG"
-          className="w-[700px] max-w-[100%] object-contain"
+          className="absolute left-2 sm:left-4 md:left-8 lg:left-12 top-1/2 transform -translate-y-1/2 object-contain"
           style={{
+            width: 'clamp(150px, 40vw, 700px)', // responsive width
             pointerEvents: 'none',
-            position: 'absolute',
-            left: '20px',
-            top: '50%',
-            transform: 'translateY(-50%)',
           }}
         />
       )}
 
-      <div className="ml-auto text-right max-w-[600px] space-y-4 z-20">
+      <div className="ml-auto text-right z-20 space-y-4 max-w-[90%] sm:max-w-[85%] md:max-w-[600px]">
         <h1
-          className={`font-bold text-3xl md:text-4xl ${
+          className={`font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl ${
             imageError ? 'text-[#0c878c]' : 'text-[#e0f7ff]'
           }`}
           style={{
@@ -55,7 +52,7 @@ const NotFound = () => {
         </h1>
 
         <p
-          className={`text-sm md:text-base leading-relaxed ${
+          className={`text-xs sm:text-sm md:text-base leading-relaxed ${
             imageError ? 'text-[#a0aec0]' : 'text-[#d4eefb]'
           }`}
           style={{
@@ -68,10 +65,10 @@ const NotFound = () => {
 
         <Link
           to="/"
-          className={`inline-block px-6 py-2 text-green-600 text-base font-semibold rounded-lg transition-all duration-300 ease-in-out shadow-md border-2 border-green-600 ${
+          className={`inline-block px-4 sm:px-5 md:px-6 py-2 text-green-600 text-sm sm:text-base font-semibold rounded-lg transition-all duration-300 ease-in-out shadow-md border-2 border-green-600 ${
             imageError
-              ? 'hover:text-white hover:border-white border-green-600'
-              : 'hover:text-white hover:border-white border-green-600'
+              ? 'hover:text-white hover:border-white'
+              : 'hover:text-white hover:border-white'
           } hover:-translate-y-1 hover:scale-105 hover:shadow-xl active:scale-95`}
           style={{
             fontFamily: "'Fuzzy Bubbles', cursive",
